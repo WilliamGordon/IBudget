@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "ibudget.infrastructure/1.0.0": {
+        "runtime": {
+          "ibudget.infrastructure.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ibudget.infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

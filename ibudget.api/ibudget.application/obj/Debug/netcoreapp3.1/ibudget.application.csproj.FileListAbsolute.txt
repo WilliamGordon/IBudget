@@ -1,0 +1,9 @@
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\bin\Debug\netcoreapp3.1\ibudget.application.deps.json
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\bin\Debug\netcoreapp3.1\ibudget.application.dll
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\bin\Debug\netcoreapp3.1\ibudget.application.pdb
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\obj\Debug\netcoreapp3.1\ibudget.application.csprojAssemblyReference.cache
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\obj\Debug\netcoreapp3.1\ibudget.application.AssemblyInfoInputs.cache
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\obj\Debug\netcoreapp3.1\ibudget.application.AssemblyInfo.cs
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\obj\Debug\netcoreapp3.1\ibudget.application.csproj.CoreCompileInputs.cache
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\obj\Debug\netcoreapp3.1\ibudget.application.dll
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\obj\Debug\netcoreapp3.1\ibudget.application.pdb

@@ -42,11 +42,5 @@ namespace ibudget.mvc.Controllers
         {
             return View();
         }
-
-        [Authorize(Policy="read:messages")]
-        public IActionResult Test()
-        {
-            return View();
-        }
     }
 }
