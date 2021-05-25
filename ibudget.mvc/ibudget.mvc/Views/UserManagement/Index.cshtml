@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ibudget.mvc.Models.ViewModel.User>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3>Users</h3>
+<br />
+
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>
+                USER
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+            @foreach (var item in Model)
+            {
+        <tr>
+            <td>
+                <a href="/UserManagement/User/@item.UserId">
+                    <img src="@item.Picture" class="rounded-circle img-fluid" width="35" height="35" alt="profile-image">
+                </a>
+            </td>
+            <td>
+                @item.Email
+            </td>
+            <td>
+                @item.Role
+            </td>
+            <td>
+                @item.UserId
+            </td>
+            <td>
+                <div class="row">
+                    <div class=" col-md-auto ">
+                        <button onclick="location.href='/UserManagement/Edit/@item.UserId'" type="button" class="btn btn-info">Edit</button>
+                    </div>
+                    <div class=" col-md-auto ">
+                        <form asp-action="delete">
+                            <input type="hidden" name="id" id="id" value="@item.UserId" />
+                            <button onclick="this.form.submit();" type="button" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+            }
+    </tbody>
+</table>

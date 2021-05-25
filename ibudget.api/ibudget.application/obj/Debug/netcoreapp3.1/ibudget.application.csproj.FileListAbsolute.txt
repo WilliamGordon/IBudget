@@ -7,3 +7,9 @@ C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.ap
 C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\obj\Debug\netcoreapp3.1\ibudget.application.csproj.CoreCompileInputs.cache
 C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\obj\Debug\netcoreapp3.1\ibudget.application.dll
 C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\obj\Debug\netcoreapp3.1\ibudget.application.pdb
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\bin\Debug\netcoreapp3.1\ibudget.application.runtimeconfig.json
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\bin\Debug\netcoreapp3.1\ibudget.application.runtimeconfig.dev.json
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\bin\Debug\netcoreapp3.1\ibudget.domain.dll
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\bin\Debug\netcoreapp3.1\ibudget.domain.pdb
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\obj\Debug\netcoreapp3.1\ibudget.application.csproj.CopyComplete
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.application\obj\Debug\netcoreapp3.1\ibudget.application.genruntimeconfig.cache

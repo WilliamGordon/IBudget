@@ -1,0 +1,79 @@
+﻿@model ibudget.mvc.Models.ViewModel.User
+
+@{
+    ViewData["Title"] = "User";
+}
+<br />
+<div>
+    <div class="bg-white px-0 ">
+        <div class="row">
+            <div class=" col-md-auto " style="padding-top: 3px">
+                <h4><img src="@Model.Picture" class="rounded-circle img-fluid" width="35" height="35" alt="profile-image"></h4>
+            </div>
+            <div class=" col-md-auto " style="padding-top: 3px">
+                <a href="/UserManagement/Edit/@Model.UserId" class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                    <small>Edit User</small>
+                </a>
+                <i class="mdi mdi-settings-outline"></i>
+                <span class="vl ml-3"></span>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NickName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NickName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Role)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Role)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UpdatedAt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastLogin)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastLogin)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LoginsCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LoginsCount)
+        </dd>
+    </dl>
+</div>

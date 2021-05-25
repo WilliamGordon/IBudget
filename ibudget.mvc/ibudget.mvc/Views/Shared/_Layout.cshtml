@@ -1,17 +1,29 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ibudget.mvc</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="https://kit.fontawesome.com/dd5c172ad8.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ibudget.mvc</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a class="navbar-brand" asp-area="" asp-controller="Dashboard" asp-action="Index">Ibudget</a>
+                }
+                else
+                {
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ibudget</a>
+                }
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,7 +33,30 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Profile">Profile</a>
+                                <div class="bg-white px-0 ">
+                                    <div class="row">
+                                        <div class=" col-md-auto " style="padding-top: 3px">
+                                            <a href="/Budget" class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                                <small>Budget</small>
+                                            </a>
+                                            <i class="mdi mdi-settings-outline"></i>
+                                            <span class="vl ml-3"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <div class="bg-white px-0 ">
+                                    <div class="row">
+                                        <div class=" col-md-auto " style="padding-top: 3px">
+                                            <a href="/UserManagement" class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                                <small>User Management</small>
+                                            </a>
+                                            <i class="mdi mdi-settings-outline"></i>
+                                            <span class="vl ml-3"></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </li>
                         }
                     </ul>
@@ -30,19 +65,54 @@
                     <ul class="nav navbar-nav navbar-right">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li><a id="qsLogoutBtn" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                            <li>
+                                <div class="bg-white px-0 ">
+                                    <div class="row">
+                                        <div class="col-md-auto ">
+                                            <ul class="list-inline">
+                                                <li class="list-inline-item">
+                                                    <a href="/Account/Profile" class="btn btn-outlined text-muted bg-transparent" data-wow-delay="0.7s">
+                                                        <img src="@User.Claims.Where(m => m.Type == "picture").FirstOrDefault().Value" class="rounded-circle img-fluid" width="35" height="35" alt="profile-image">
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class=" col-md-auto" style="padding-top: 3px">
+                                            <a href="/Account/Logout" class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                                <small>Logout</small>
+                                            </a>
+                                            <i class="mdi mdi-settings-outline"></i>
+                                            <span class="vl ml-3"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
                         }
                         else
                         {
-                            <li><a id="qsLoginBtn" asp-controller="Account" asp-action="Login">Login</a></li>
+                            <li>
+                                <div class="bg-white px-0 ">
+                                    <div class="row">
+                                        <div class=" col-md-auto " style="padding-top: 3px">
+                                            <a href="/Account/Login" class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                                <small>Login</small>
+                                            </a>
+                                            <i class="mdi mdi-settings-outline"></i>
+                                            <span class="vl ml-3"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
                         }
                     </ul>
+
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            <partial name="_ErrorNotificationPartial" />
             @RenderBody()
         </main>
     </div>

@@ -7,3 +7,11 @@ C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.in
 C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.infrastructure\obj\Debug\netcoreapp3.1\ibudget.infrastructure.csproj.CoreCompileInputs.cache
 C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.infrastructure\obj\Debug\netcoreapp3.1\ibudget.infrastructure.dll
 C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.infrastructure\obj\Debug\netcoreapp3.1\ibudget.infrastructure.pdb
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.infrastructure\bin\Debug\netcoreapp3.1\ibudget.infrastructure.runtimeconfig.json
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.infrastructure\bin\Debug\netcoreapp3.1\ibudget.infrastructure.runtimeconfig.dev.json
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.infrastructure\bin\Debug\netcoreapp3.1\ibudget.application.dll
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.infrastructure\bin\Debug\netcoreapp3.1\ibudget.domain.dll
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.infrastructure\bin\Debug\netcoreapp3.1\ibudget.application.pdb
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.infrastructure\bin\Debug\netcoreapp3.1\ibudget.domain.pdb
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.infrastructure\obj\Debug\netcoreapp3.1\ibudget.infrastructure.csproj.CopyComplete
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.infrastructure\obj\Debug\netcoreapp3.1\ibudget.infrastructure.genruntimeconfig.cache

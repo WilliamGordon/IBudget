@@ -1,3 +1,4 @@
+using Auth0.ManagementApi;
 using ibudget.mvc.Handler;
 using ibudget.mvc.Support;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -115,7 +116,8 @@ namespace ibudget.mvc
                     }
                 };
             });
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation().AddNewtonsoftJson();
+            services.AddSingleton<IManagementConnection, HttpClientManagementConnection>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -127,7 +129,7 @@ namespace ibudget.mvc
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }

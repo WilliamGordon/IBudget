@@ -1,0 +1,24 @@
+﻿@inject IJsonHelper Json;
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorNotification))
+{
+    <br />
+    <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        <ul id="errorList">
+
+        </ul>
+        <script>
+            var obj = JSON.parse(@Json.Serialize(ViewBag.ErrorNotification));
+            console.log(obj);
+            var ul = document.getElementById("errorList");
+            for (const key in obj.errors) {
+                var li = document.createElement("li");
+                li.appendChild(document.createTextNode(`${key}: ${obj.errors[key]}`));
+                ul.appendChild(li);
+            }
+        </script>
+    </div>
+    <br />
+}
