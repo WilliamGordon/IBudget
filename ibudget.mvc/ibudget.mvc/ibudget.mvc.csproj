@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Auth0.AuthenticationApi" Version="7.8.0" />
     <PackageReference Include="Auth0.ManagementApi" Version="7.8.0" />
+    <PackageReference Include="jQuery.UI.Combined" Version="1.12.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.6" />

@@ -21,14 +21,7 @@ namespace ibudget.application.Budgets.Commands.CreateBudget
 
             RuleFor(v => v.Name)
                 .NotEmpty().WithMessage("Name is required")
-                .MaximumLength(200).WithMessage("Name must not exceed 200 characters.")
-                .MustAsync(BeUniqueTitle).WithMessage("The specified name already exists.");
-        }
-
-        public async Task<bool> BeUniqueTitle(string name, CancellationToken cancellationToken)
-        {
-            return await _context.Budgets
-                .AllAsync(l => l.Name != name);
+                .MaximumLength(200).WithMessage("Name must not exceed 200 characters.");
         }
     }
 }

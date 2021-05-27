@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ibudget.mvc.Models.ViewModel
 {
-    public class BudgetsViewCreate
+    public class DashboardBudgetsComplexeModel
     {
-        public List<Budget> Budgets { get; set; }
+        public List<BudgetViewModel> Budgets { get; set; }
         public BudgetCreateModel Budget { get; set; }
     }
 }

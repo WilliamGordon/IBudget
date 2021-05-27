@@ -34,8 +34,6 @@
 
   <ItemGroup>
     <Folder Include="Budgets\" />
-    <Folder Include="Categories\Queries\" />
-    <Folder Include="Transactions\Queries\" />
   </ItemGroup>
 
 </Project>

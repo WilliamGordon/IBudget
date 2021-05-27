@@ -39,33 +39,41 @@ namespace ibudget.infrastructure.Migrations
 
             modelBuilder.Entity("ibudget.domain.Entities.Category", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BudgetId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TransactionId")
+                    b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("ibudget.domain.Entities.Transaction", b =>
                 {
-                    b.Property<int>("TransactionId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Amount")
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("BudgetId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BudgetId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
@@ -83,20 +91,44 @@ namespace ibudget.infrastructure.Migrations
                     b.Property<string>("Transmitter")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TransactionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BudgetId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("ibudget.domain.Entities.Category", b =>
+                {
+                    b.HasOne("ibudget.domain.Entities.Category", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("ibudget.domain.Entities.Transaction", b =>
                 {
                     b.HasOne("ibudget.domain.Entities.Budget", "Budget")
                         .WithMany()
-                        .HasForeignKey("BudgetId");
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ibudget.domain.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Budget");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ibudget.domain.Entities.Category", b =>
+                {
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

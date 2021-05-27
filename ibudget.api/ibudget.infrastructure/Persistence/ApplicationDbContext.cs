@@ -21,5 +21,15 @@ namespace ibudget.infrastructure
             var result = await base.SaveChangesAsync(cancellationToken);
             return result;
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Category>()
+                .HasOne<Category>(u => u.Parent)      // EF'll load Parent if any     
+                .WithMany(u => u.Children)         // load all childs if any
+                .HasForeignKey(x => x.ParentId)
+                .IsRequired(false);
+        }
     }
 }

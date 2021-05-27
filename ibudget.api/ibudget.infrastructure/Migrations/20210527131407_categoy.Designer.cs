@@ -10,8 +10,8 @@ using ibudget.infrastructure;
 namespace ibudget.infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210525172051_Initial")]
-    partial class Initial
+    [Migration("20210527131407_categoy")]
+    partial class categoy
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,33 +41,41 @@ namespace ibudget.infrastructure.Migrations
 
             modelBuilder.Entity("ibudget.domain.Entities.Category", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BudgetId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TransactionId")
+                    b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("ibudget.domain.Entities.Transaction", b =>
                 {
-                    b.Property<int>("TransactionId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("BudgetId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
@@ -85,11 +93,22 @@ namespace ibudget.infrastructure.Migrations
                     b.Property<string>("Transmitter")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TransactionId");
+                    b.HasKey("Id");
 
                     b.HasIndex("BudgetId");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("ibudget.domain.Entities.Category", b =>
+                {
+                    b.HasOne("ibudget.domain.Entities.Category", "Parent")
+                        .WithMany("Children")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("ibudget.domain.Entities.Transaction", b =>
@@ -98,7 +117,18 @@ namespace ibudget.infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("BudgetId");
 
+                    b.HasOne("ibudget.domain.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
                     b.Navigation("Budget");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ibudget.domain.Entities.Category", b =>
+                {
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

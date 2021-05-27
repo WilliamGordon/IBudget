@@ -10,8 +10,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
     <script>hljs.highlightAll();</script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js" type="text/javascript"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </head>
 <body>
+
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -36,7 +43,7 @@
                                 <div class="bg-white px-0 ">
                                     <div class="row">
                                         <div class=" col-md-auto " style="padding-top: 3px">
-                                            <a href="/Budget" class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                            <a href="/Budget/DashboardBudgets" class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
                                                 <small>Budget</small>
                                             </a>
                                             <i class="mdi mdi-settings-outline"></i>
@@ -45,19 +52,22 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item">
-                                <div class="bg-white px-0 ">
-                                    <div class="row">
-                                        <div class=" col-md-auto " style="padding-top: 3px">
-                                            <a href="/UserManagement" class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
-                                                <small>User Management</small>
-                                            </a>
-                                            <i class="mdi mdi-settings-outline"></i>
-                                            <span class="vl ml-3"></span>
+                            @if (@User.Claims.Where(m => m.Type == "https://schemas.quickstarts.com/roles").FirstOrDefault().Value == "Owner")
+                            {
+                                <li class="nav-item">
+                                    <div class="bg-white px-0 ">
+                                        <div class="row">
+                                            <div class=" col-md-auto " style="padding-top: 3px">
+                                                <a href="/UserManagement" class="btn btn-outlined btn-black text-muted bg-transparent" data-wow-delay="0.7s">
+                                                    <small>User Management</small>
+                                                </a>
+                                                <i class="mdi mdi-settings-outline"></i>
+                                                <span class="vl ml-3"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
+                            }
                         }
                     </ul>
                 </div>
@@ -122,9 +132,5 @@
             &copy; 2021 - ibudget.mvc - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

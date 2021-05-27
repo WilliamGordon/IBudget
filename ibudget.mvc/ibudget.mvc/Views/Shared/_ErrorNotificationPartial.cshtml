@@ -15,7 +15,7 @@
             var ul = document.getElementById("errorList");
             for (const key in obj.errors) {
                 var li = document.createElement("li");
-                li.appendChild(document.createTextNode(`${key}: ${obj.errors[key]}`));
+                li.appendChild(document.createTextNode(`${obj.errors[key]}`));
                 ul.appendChild(li);
             }
         </script>
