@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ibudget.mvc", "ibudget.mvc\ibudget.mvc.csproj", "{D666DF6E-63E5-48C6-92C4-8DDE99BB22A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ibudget.mvc", "ibudget.mvc\ibudget.mvc.csproj", "{D666DF6E-63E5-48C6-92C4-8DDE99BB22A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

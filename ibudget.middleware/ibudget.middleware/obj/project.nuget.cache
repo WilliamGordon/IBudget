@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "G/VCMeps7qjhJ3bHkMLs/YW7tVV7ABS8i+mNE4fwk8PNMCYzO11nxh/fgHXk0svFQviZrUeHxtacYrKwoBaYCw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\willi\\Desktop\\WEB\\Project\\2_developement\\IBudget\\ibudget.middleware\\ibudget.middleware\\ibudget.middleware.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\willi\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
+    "C:\\Users\\willi\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
+    "C:\\Users\\willi\\.nuget\\packages\\microsoft.extensions.primitives\\2.2.0\\microsoft.extensions.primitives.2.2.0.nupkg.sha512",
+    "C:\\Users\\willi\\.nuget\\packages\\system.memory\\4.5.1\\system.memory.4.5.1.nupkg.sha512",
+    "C:\\Users\\willi\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.1\\system.runtime.compilerservices.unsafe.4.5.1.nupkg.sha512",
+    "C:\\Users\\willi\\.nuget\\packages\\system.text.encodings.web\\4.5.0\\system.text.encodings.web.4.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}

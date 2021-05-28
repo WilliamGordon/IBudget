@@ -425,4 +425,5 @@ C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.mvc\ibudget.mv
 C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.mvc\ibudget.mvc\obj\Debug\net5.0\Razor\Views\Shared\_ErrorNotificationPartial.cshtml.g.cs
 C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.mvc\ibudget.mvc\obj\Debug\net5.0\Razor\Views\Budget\DashboardBudget.cshtml.g.cs
 C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.mvc\ibudget.mvc\obj\Debug\net5.0\Razor\Views\Budget\DashboardBudgets.cshtml.g.cs
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.mvc\ibudget.mvc\bin\Debug\net5.0\ibudget.middleware.dll
 C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.mvc\ibudget.mvc\obj\Debug\net5.0\ibudget.mvc.csprojAssemblyReference.cache

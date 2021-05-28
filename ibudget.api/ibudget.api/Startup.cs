@@ -1,26 +1,16 @@
 using ibudget.api.Handler;
 using ibudget.application;
 using ibudget.infrastructure;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Swashbuckle.AspNetCore.Swagger;
 using FluentValidation.AspNetCore;
+using ibudget.middleware;
 
 namespace ibudget.api
 {
@@ -88,6 +78,7 @@ namespace ibudget.api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseLogRequestMiddleware();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

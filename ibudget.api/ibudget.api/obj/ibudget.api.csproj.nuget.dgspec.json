@@ -26,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\willi\\Desktop\\WEB\\Project\\2_developement\\IBudget\\ibudget.middleware\\ibudget.middleware\\bin\\Debug": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -130,6 +131,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"
+            },
+            "ibudget.middleware": {
+              "target": "Package",
+              "version": "[1.0.0, )"
             }
           },
           "imports": [
@@ -176,6 +181,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\willi\\Desktop\\WEB\\Project\\2_developement\\IBudget\\ibudget.middleware\\ibudget.middleware\\bin\\Debug": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -307,6 +313,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\willi\\Desktop\\WEB\\Project\\2_developement\\IBudget\\ibudget.middleware\\ibudget.middleware\\bin\\Debug": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -434,6 +441,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\willi\\Desktop\\WEB\\Project\\2_developement\\IBudget\\ibudget.middleware\\ibudget.middleware\\bin\\Debug": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

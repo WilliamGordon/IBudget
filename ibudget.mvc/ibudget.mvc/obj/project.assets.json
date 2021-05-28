@@ -52,6 +52,18 @@
           "lib/netstandard1.0/Humanizer.dll": {}
         }
       },
+      "ibudget.middleware/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Abstractions": "2.2.0"
+        },
+        "compile": {
+          "lib/net5.0/ibudget.middleware.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/ibudget.middleware.dll": {}
+        }
+      },
       "jQuery/1.12.4": {
         "type": "package"
       },
@@ -2538,6 +2550,17 @@
         "humanizer.core.2.2.0.nupkg.sha512",
         "humanizer.core.nuspec",
         "lib/netstandard1.0/Humanizer.dll"
+      ]
+    },
+    "ibudget.middleware/1.0.0": {
+      "sha512": "ta7HxirPQKTUaD8nNsonRV3aZXmHixCRvAuJiAIvUOV0o0B4Y8w55JP84l5RK784QEtekMGu0Ux7Gsn4iOtrkA==",
+      "type": "package",
+      "path": "ibudget.middleware/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        "ibudget.middleware.1.0.0.nupkg.sha512",
+        "ibudget.middleware.nuspec",
+        "lib/net5.0/ibudget.middleware.dll"
       ]
     },
     "jQuery/1.12.4": {
@@ -8051,6 +8074,7 @@
       "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.10.9",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 5.0.2",
       "RestSharp >= 106.11.7",
+      "ibudget.middleware >= 1.0.0",
       "jQuery.UI.Combined >= 1.12.1"
     ]
   },
@@ -8080,6 +8104,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Users\\willi\\Desktop\\WEB\\Project\\2_developement\\IBudget\\ibudget.middleware\\ibudget.middleware\\bin\\Debug": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -8137,6 +8162,10 @@
           "RestSharp": {
             "target": "Package",
             "version": "[106.11.7, )"
+          },
+          "ibudget.middleware": {
+            "target": "Package",
+            "version": "[1.0.0, )"
           },
           "jQuery.UI.Combined": {
             "target": "Package",

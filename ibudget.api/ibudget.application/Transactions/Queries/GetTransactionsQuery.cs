@@ -14,6 +14,8 @@ namespace ibudget.application.Transactions.Queries
     public class GetTransactionsQuery : IRequest<List<TransactionDto>>
     {
         public int BudgetId { get; set; }
+        public string Month { get; set; }
+        public string Year { get; set; }
     }
 
     public class GetTransactionsQueryHandler : IRequestHandler<GetTransactionsQuery, List<TransactionDto>>
@@ -28,9 +30,16 @@ namespace ibudget.application.Transactions.Queries
         }
         public async Task<List<TransactionDto>> Handle(GetTransactionsQuery request, CancellationToken cancellationToken)
         {
+            if(String.IsNullOrEmpty(request.Month) || String.IsNullOrEmpty(request.Year))
+            {
+                request.Month = DateTime.Now.Month.ToString();
+                request.Year = DateTime.Now.Year.ToString();
+            }
 
-            var test = _context.Transactions.Where(x => x.Budget.Id == request.BudgetId).ToList();
-            return _mapper.Map<List<TransactionDto>>(await _context.Transactions.Where(x => x.Budget.Id == request.BudgetId).ToListAsync());
+            return _mapper.Map<List<TransactionDto>>(await _context.Transactions.Where(x => 
+                x.Budget.Id == request.BudgetId &&
+                x.Date.Month.ToString() == request.Month &&
+                x.Date.Year.ToString() == request.Year).ToListAsync());
         }
     }
 }

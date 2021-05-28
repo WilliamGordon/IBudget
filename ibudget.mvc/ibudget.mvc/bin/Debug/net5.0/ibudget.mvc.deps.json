@@ -35,6 +35,7 @@
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.10.9",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "5.0.2",
           "RestSharp": "106.11.7",
+          "ibudget.middleware": "1.0.0",
           "jQuery.UI.Combined": "1.12.1",
           "Microsoft.AspNetCore.Antiforgery": "5.0.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions.Reference": "5.0.0.0",
@@ -380,6 +381,20 @@
             "assemblyVersion": "2.2.0.0",
             "fileVersion": "2.2.0.0"
           }
+        }
+      },
+      "ibudget.middleware/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Abstractions": "2.2.0"
+        },
+        "runtime": {
+          "lib/net5.0/ibudget.middleware.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/net5.0/ibudget.middleware.dll": {}
         }
       },
       "jQuery/1.12.4": {},
@@ -3724,6 +3739,13 @@
       "sha512": "sha512-rsYXB7+iUPP8AHgQ8JP2UZI2xK2KhjcdGr9E6zX3CsZaTLCaw8M35vaAJRo1rfxeaZEVMuXeaquLVCkZ7JcZ5Q==",
       "path": "humanizer.core/2.2.0",
       "hashPath": "humanizer.core.2.2.0.nupkg.sha512"
+    },
+    "ibudget.middleware/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ta7HxirPQKTUaD8nNsonRV3aZXmHixCRvAuJiAIvUOV0o0B4Y8w55JP84l5RK784QEtekMGu0Ux7Gsn4iOtrkA==",
+      "path": "ibudget.middleware/1.0.0",
+      "hashPath": "ibudget.middleware.1.0.0.nupkg.sha512"
     },
     "jQuery/1.12.4": {
       "type": "package",

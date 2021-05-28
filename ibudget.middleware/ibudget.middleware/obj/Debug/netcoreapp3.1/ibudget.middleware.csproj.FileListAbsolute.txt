@@ -1,0 +1,4 @@
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\obj\Debug\netcoreapp3.1\ibudget.middleware.csprojAssemblyReference.cache
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\obj\Debug\netcoreapp3.1\ibudget.middleware.AssemblyInfoInputs.cache
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\obj\Debug\netcoreapp3.1\ibudget.middleware.AssemblyInfo.cs
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\obj\Debug\netcoreapp3.1\ibudget.middleware.csproj.CoreCompileInputs.cache

@@ -97,6 +97,18 @@
           "lib/netstandard2.0/Humanizer.dll": {}
         }
       },
+      "ibudget.middleware/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Http.Abstractions": "2.2.0"
+        },
+        "compile": {
+          "lib/net5.0/ibudget.middleware.dll": {}
+        },
+        "runtime": {
+          "lib/net5.0/ibudget.middleware.dll": {}
+        }
+      },
       "MediatR/9.0.0": {
         "type": "package",
         "compile": {
@@ -1996,6 +2008,17 @@
         "lib/netstandard2.0/Humanizer.dll",
         "lib/netstandard2.0/Humanizer.xml",
         "logo.png"
+      ]
+    },
+    "ibudget.middleware/1.0.0": {
+      "sha512": "ta7HxirPQKTUaD8nNsonRV3aZXmHixCRvAuJiAIvUOV0o0B4Y8w55JP84l5RK784QEtekMGu0Ux7Gsn4iOtrkA==",
+      "type": "package",
+      "path": "ibudget.middleware/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        "ibudget.middleware.1.0.0.nupkg.sha512",
+        "ibudget.middleware.nuspec",
+        "lib/net5.0/ibudget.middleware.dll"
       ]
     },
     "MediatR/9.0.0": {
@@ -6409,7 +6432,8 @@
       "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.10.9",
       "Swashbuckle.AspNetCore >= 5.6.3",
       "ibudget.application >= 1.0.0",
-      "ibudget.infrastructure >= 1.0.0"
+      "ibudget.infrastructure >= 1.0.0",
+      "ibudget.middleware >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -6438,6 +6462,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Users\\willi\\Desktop\\WEB\\Project\\2_developement\\IBudget\\ibudget.middleware\\ibudget.middleware\\bin\\Debug": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -6542,6 +6567,10 @@
           "Swashbuckle.AspNetCore": {
             "target": "Package",
             "version": "[5.6.3, )"
+          },
+          "ibudget.middleware": {
+            "target": "Package",
+            "version": "[1.0.0, )"
           }
         },
         "imports": [

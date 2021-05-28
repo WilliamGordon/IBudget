@@ -78,3 +78,4 @@ C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.ap
 C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.api\bin\Debug\net5.0\ibudget.application.pdb
 C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.api\bin\Debug\net5.0\ibudget.infrastructure.pdb
 C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.api\bin\Debug\net5.0\ibudget.domain.pdb
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.api\ibudget.api\bin\Debug\net5.0\ibudget.middleware.dll

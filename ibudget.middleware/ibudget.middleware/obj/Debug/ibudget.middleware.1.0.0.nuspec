@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>ibudget.middleware</id>
+    <version>1.0.0</version>
+    <authors>William Wauters</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Middleware to log request and response an output</description>
+    <dependencies>
+      <group targetFramework="net5.0">
+        <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.2.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\bin\Debug\net5.0\ibudget.middleware.dll" target="lib\net5.0\ibudget.middleware.dll" />
+  </files>
+</package>

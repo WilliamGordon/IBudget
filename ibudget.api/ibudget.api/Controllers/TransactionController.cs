@@ -15,12 +15,13 @@ namespace ibudget.api.Controllers
     [Authorize]
     public class TransactionController : ApiControllerBase
     {
-        [HttpGet("GetAllTransactionsForBudget/{budgetid}")]
-        public async Task<ActionResult<List<TransactionDto>>> GetAllTransactionsForBudget(int budgetid)
+#nullable enable
+        [HttpGet("GetAllTransactionsForBudget/{budgetid}/{month}/{year}")]
+        public async Task<ActionResult<List<TransactionDto>>> GetAllTransactionsForBudget(int budgetid, string? month, string? year)
         {
-            return await Mediator.Send(new GetTransactionsQuery { BudgetId = budgetid });
+            return await Mediator.Send(new GetTransactionsQuery { BudgetId = budgetid, Month = month, Year = year });
         }
-
+#nullable disable
         [HttpGet("GetTransaction/{id}")]
         public async Task<ActionResult<TransactionDto>> GetTransaction(int id)
         {
@@ -33,8 +34,8 @@ namespace ibudget.api.Controllers
             return await Mediator.Send(command);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, UpdateTransactionCategoryCommand command)
+        [HttpPut("UpdateTransaction/{id}")]
+        public async Task<ActionResult> UpdateTransaction(int id, UpdateTransactionCommand command)
         {
             if (id != command.Id)
             {

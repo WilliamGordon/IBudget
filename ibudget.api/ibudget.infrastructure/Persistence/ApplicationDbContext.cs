@@ -16,6 +16,13 @@ namespace ibudget.infrastructure
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Category> Categories { get; set; }
 
+
+        // to delete
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-FEM4KP2\MSSQLSERVER_SGBD;Initial Catalog=IBudget;Persist Security Info=True;User ID=sa;Password=test1234!");
+        }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             var result = await base.SaveChangesAsync(cancellationToken);

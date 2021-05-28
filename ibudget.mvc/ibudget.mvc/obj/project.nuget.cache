@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "nO94/N0RpTZUIKJZ7oiOUowhiJlA77QkBw6PNVZ3jUt4k3Kxv/8JvYYPj/L3SJ3el6s3D5TL7UqlZmFikANJ0w==",
+  "dgSpecHash": "R/c5GyyFKMIw/sZFo7R5IKdvPmgbs3OEjQ9Bm4V4ow1e0RXxdA6VyNOizU3T8pZ7ufnqNrmD8puOtHqYis8qtQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\willi\\Desktop\\WEB\\Project\\2_developement\\IBudget\\ibudget.mvc\\ibudget.mvc\\ibudget.mvc.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\willi\\.nuget\\packages\\auth0.core\\7.8.0\\auth0.core.7.8.0.nupkg.sha512",
     "C:\\Users\\willi\\.nuget\\packages\\auth0.managementapi\\7.8.0\\auth0.managementapi.7.8.0.nupkg.sha512",
     "C:\\Users\\willi\\.nuget\\packages\\humanizer.core\\2.2.0\\humanizer.core.2.2.0.nupkg.sha512",
+    "C:\\Users\\willi\\.nuget\\packages\\ibudget.middleware\\1.0.0\\ibudget.middleware.1.0.0.nupkg.sha512",
     "C:\\Users\\willi\\.nuget\\packages\\jquery\\1.12.4\\jquery.1.12.4.nupkg.sha512",
     "C:\\Users\\willi\\.nuget\\packages\\jquery.ui.combined\\1.12.1\\jquery.ui.combined.1.12.1.nupkg.sha512",
     "C:\\Users\\willi\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",

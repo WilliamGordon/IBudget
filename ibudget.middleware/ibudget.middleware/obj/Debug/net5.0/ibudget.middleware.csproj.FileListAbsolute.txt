@@ -1,0 +1,11 @@
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\obj\Debug\net5.0\ibudget.middleware.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\obj\Debug\net5.0\ibudget.middleware.AssemblyInfoInputs.cache
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\obj\Debug\net5.0\ibudget.middleware.AssemblyInfo.cs
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\obj\Debug\net5.0\ibudget.middleware.csproj.CoreCompileInputs.cache
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\bin\Debug\net5.0\ibudget.middleware.deps.json
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\bin\Debug\net5.0\ibudget.middleware.dll
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\bin\Debug\net5.0\ref\ibudget.middleware.dll
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\bin\Debug\net5.0\ibudget.middleware.pdb
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\obj\Debug\net5.0\ibudget.middleware.dll
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\obj\Debug\net5.0\ref\ibudget.middleware.dll
+C:\Users\willi\Desktop\WEB\Project\2_developement\IBudget\ibudget.middleware\ibudget.middleware\obj\Debug\net5.0\ibudget.middleware.pdb

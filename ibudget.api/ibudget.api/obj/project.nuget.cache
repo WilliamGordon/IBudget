@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "tEjXbPohEsXQnClV6b/RDfVx1HozJlXqFjeskAYt6luiKksZsHlQhm6sMezg5GTwslzTaG+CE2KiA9IvRHPIDA==",
+  "dgSpecHash": "Ssm64VVjFutG2Xi4Kzx0AK2yDr1ux/5ye56U0TuAQXF3JeZkxj8E2JJDsAh0nCFe7xllFUppepyNKzKp1Y8x5w==",
   "success": true,
   "projectFilePath": "C:\\Users\\willi\\Desktop\\WEB\\Project\\2_developement\\IBudget\\ibudget.api\\ibudget.api\\ibudget.api.csproj",
   "expectedPackageFiles": [
@@ -12,6 +12,7 @@
     "C:\\Users\\willi\\.nuget\\packages\\fluentvalidation.aspnetcore\\10.1.0\\fluentvalidation.aspnetcore.10.1.0.nupkg.sha512",
     "C:\\Users\\willi\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\10.1.0\\fluentvalidation.dependencyinjectionextensions.10.1.0.nupkg.sha512",
     "C:\\Users\\willi\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
+    "C:\\Users\\willi\\.nuget\\packages\\ibudget.middleware\\1.0.0\\ibudget.middleware.1.0.0.nupkg.sha512",
     "C:\\Users\\willi\\.nuget\\packages\\mediatr\\9.0.0\\mediatr.9.0.0.nupkg.sha512",
     "C:\\Users\\willi\\.nuget\\packages\\mediatr.extensions.microsoft.dependencyinjection\\9.0.0\\mediatr.extensions.microsoft.dependencyinjection.9.0.0.nupkg.sha512",
     "C:\\Users\\willi\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.6\\microsoft.aspnetcore.authentication.jwtbearer.5.0.6.nupkg.sha512",

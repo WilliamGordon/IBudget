@@ -3,11 +3,54 @@
 @{
     ViewData["Title"] = "Details";
 }
+<script src="https://cdn.jsdelivr.net/npm/autonumeric@4.1.0"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
+
+
     // GetDataTransaction
-    var transaction = JSON.parse(JSON.stringify(@Json.Serialize(Model.Transactions)));
-        console.log(transactionJson);
+    var transactions = JSON.parse(JSON.stringify(@Json.Serialize(Model.Transactions)));
+    var categories = JSON.parse(JSON.stringify(@Json.Serialize(Model.Categories)));
+
+    var dateTransactionsCategories = [["Categories", "Overall"]];
+    var dateIncomeExpense;
+    var totalBySpending = 0;
+    // Loop overeach categories
+    for (var i = 0; i < categories.length; i++) {
+        var catArray = [categories[i].name, 0]
+        // Loop overeach transaction, and check if part of current category
+        for (var j = 0; j < transactions.length; j++) {
+            if (transactions[j].categoryId == categories[i].id) {
+                if (transactions[j].amount < 0) {
+                    catArray[1] = catArray[1] + Math.abs(transactions[j].amount);
+                    totalBySpending = totalBySpending + Math.abs(transactions[j].amount);
+                }
+            }
+        }
+        dateTransactionsCategories.push(catArray);
+    }
+    console.log(dateTransactionsCategories);
+
+    var struct = ['Element', 'Total', { role: 'style' }, { role: 'annotation' }]
+    var Income = ['Income', 0, '#b87333','Cu']
+    var Expense = ['Expense', 0, 'silver','Ag']
+    var Savings = ['Saving', 0, 'gold','Au']
+
+    for (var i = 0; i < transactions.length; i++) {
+        var datetransaction = new Date(transactions[i].date)
+        if (transactions[i].amount < 0) {
+            if (transactions[i].receiver == '375-4285670-95') {
+                Savings[1] = Savings[1] + Math.abs(transactions[i].amount)
+            } else {
+                Expense[1] = Expense[1] + Math.abs(transactions[i].amount)
+            }
+        } else {
+            Income[1] = Income[1] + Math.abs(transactions[i].amount)
+        }
+    }
+
+    dateIncomeExpense = [struct, Income, Expense, Savings]
+    console.log(dateIncomeExpense);
 
     google.load("visualization", "1", {
         packages: ["corechart"]
@@ -17,18 +60,16 @@
 
     $(window).on("throttledresize", function (event) {
         initChartCategpry();
-        initChartExpense();
+        //initChartExpense();
     });
 
     function initChartCategpry() {
-
 
         var options = {
             legend: 'none',
             width: '100%',
             height: '100%',
-            pieSliceText: 'percentage',
-            colors: ['#0598d8', '#f97263'],
+            pieSliceText: 'label',
             chartArea: {
                 left: "3%",
                 top: "3%",
@@ -36,32 +77,21 @@
                 width: "94%"
             }
         };
-        
 
-        var data = google.visualization.arrayToDataTable([
-            ['Gender', 'Overall'],
-            ['M', 110],
-            ['M', 40],
-            ['F', 20]
-        ]);
+        var data = google.visualization.arrayToDataTable(dateTransactionsCategories);
         drawChartCategory(data, options)
+        document.getElementById("totalCategorySpending").innerHTML = totalBySpending + " €"
     }
     function initChartExpense() {
 
-        var data = google.visualization.arrayToDataTable([
-            ['Month', 'Income', 'Expenses'],
-            ['January', 1000, 400],
-            ['February', 1170, 460],
-            ['March', 660, 1120],
-            ['March', 660, 1120],
-        ]);
+        var data = google.visualization.arrayToDataTable(dateIncomeExpense);
 
         var options = {
             legend: 'none',
             width: '100%',
             height: '100%',
-            title: 'Company Performance',
-            curveType: 'function',
+            title: 'Income/Expense for Month',
+            bar: { groupWidth: "95%" },
             legend: { position: 'bottom' },
             chartArea: {
                 left: "10%",
@@ -79,7 +109,7 @@
     }
 
     function drawChartExpense(data, options) {
-        var chart = new google.visualization.LineChart(document.getElementById('chart_expense'));
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_expense'));
         chart.draw(data, options);
     }
 </script>
@@ -141,7 +171,7 @@
     </div>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Spending by category</h5>
+            <h5 class="card-title">Spending by category: <span id="totalCategorySpending"></span></h5>
             <div id="chart_wrap_category"><div id="chart_category"></div></div>
         </div>
         <div class="card-footer">
@@ -152,7 +182,40 @@
 <div class="card-deck mt-3">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Transactions</h5>
+            <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Transactions</label>
+                </div>
+                <select class="custom-select" id="month" onchange="window.location.replace('./@Model.Budget.Id?month=' + $('#month').val() + '&year=' + $('#year').val());">
+                    <option selected></option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">Mai</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">Augustus</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+                <select class="custom-select" id="year" onchange="window.location.replace('./@Model.Budget.Id?month=' + $('#month').val() + '&year=' + $('#year').val());">
+                    <option selected></option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                </select>
+            </div>
             <div class="table-responsive">
                 <table class="table table-sm table-hover">
                     <thead>
@@ -171,7 +234,7 @@
                             {
                                 <tr style="cursor: pointer;" onclick="window.location='#';">
                                     <td>@item.Amount</td>
-                                    <td>@item.Date</td>
+                                    <td>@item.Date.ToShortDateString()</td>
                                     <td>@item.Message</td>
                                     @{
                                         var category = Model.Categories.SingleOrDefault(c => c.Id == item.CategoryId);
@@ -181,8 +244,11 @@
                                                 <p>@category.Name</p>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#ModelAddCategory" onclick="$('#TransactionForEdit_Id').val('@item.Id'); $('#TransactionForEdit_CategoryId').val('@item.CategoryId');">
+                                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#ModelAddCategory" onclick="$('#TransactionCategoryForEdit_TransactionCategoryForEdit_Id').val('@item.Id'); $('#TransactionCategoryForEdit_TransactionCategoryForEdit_CategoryId').val('@item.CategoryId');">
                                                     Edit Category
+                                                </button>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#TransactionForEditModal" onclick="SetupModalForTransactionEdit('@item.Id', '@item.BudgetId', '@item.Amount', '@item.Description', '@item.CategoryId', '@item.Date', '@item.Transmitter', '@item.Receiver', '@item.Message');">
+                                                    Edit
                                                 </button>
                                             </td>
                                         }
@@ -192,8 +258,11 @@
                                                 <p>None</p>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModelAddCategory" onclick="$('#TransactionForEdit_Id').val('@item.Id')">
+                                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModelAddCategory" onclick="$('#TransactionCategoryForEdit_TransactionCategoryForEdit_Id').val('@item.Id')">
                                                     Add Category
+                                                </button>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#TransactionForEditModal" onclick="SetupModalForTransactionEdit('@item.Id', '@item.BudgetId', '@item.Amount', '@item.Description', '@item.CategoryId', '@item.Date', '@item.Transmitter', '@item.Receiver', '@item.Message');">
+                                                    Edit
                                                 </button>
                                             </td>
                                         }
@@ -231,7 +300,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form asp-action="CreateTransaction">
+            <form asp-action="CreateTransaction" id="CreateTransactionForm">
                 <div class="modal-body">
                     <div class="text-danger">
                         <p>
@@ -246,48 +315,52 @@
                                         ul.appendChild(li);
                                     }
                                 }
-                                    
+
                             </script>
                         </p>
                     </div>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="@Model.Transaction.Amount" class="control-label"></label>
-                        <input asp-for="@Model.Transaction.Amount" class="form-control" />
-                        <input asp-for="@Model.Transaction.BudgetId" type="hidden" class="form-control" />
-                        <span asp-validation-for="@Model.Transaction.Amount" class="text-danger"></span>
+                        <label asp-for="@Model.Transaction.Transaction.Amount" class="control-label"></label>
+                        <input asp-for="@Model.Transaction.Transaction.Amount" class="form-control" />
+                        <input asp-for="@Model.Transaction.Transaction.BudgetId" type="hidden" class="form-control" />
+                        <span asp-validation-for="@Model.Transaction.Transaction.Amount" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.Transaction.Description" class="control-label"></label>
-                        <input asp-for="@Model.Transaction.Description" class="form-control" />
-                        <span asp-validation-for="@Model.Transaction.Description" class="text-danger"></span>
+                        <label asp-for="@Model.Transaction.Transaction.Description" class="control-label"></label>
+                        <input asp-for="@Model.Transaction.Transaction.Description" class="form-control" />
+                        <span asp-validation-for="@Model.Transaction.Transaction.Description" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.Transaction.CategoryId" class="control-label"></label>
-                        <select asp-for="@Model.Transaction.CategoryId" asp-items="@Model.Transaction.Categories" class="browser-default custom-select">
+                        <label asp-for="@Model.Transaction.Transaction.CategoryId" class="control-label"></label>
+                        <select asp-for="@Model.Transaction.Transaction.CategoryId" asp-items="@Model.Transaction.Transaction.Categories" class="browser-default custom-select">
                             <option value=""></option>
                         </select>
-                        <span asp-validation-for="@Model.Transaction.CategoryId" class="text-danger"></span>
+                        <span asp-validation-for="@Model.Transaction.Transaction.CategoryId" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.Transaction.Date" class="control-label"></label>
-                        <input asp-for="@Model.Transaction.Date" class="form-control" type='text' />
-                        <span asp-validation-for="@Model.Transaction.Date" class="text-danger"></span>
+                        <label asp-for="@Model.Transaction.Transaction.Date" class="control-label"></label>
+                        <input asp-for="@Model.Transaction.Transaction.Date" asp-format="{0:dd/MM/yyyy}" class="form-control" type='text' />
+                        <span asp-validation-for="@Model.Transaction.Transaction.Date" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.Transaction.Transmitter" class="control-label"></label>
-                        <input asp-for="@Model.Transaction.Transmitter" class="form-control" />
-                        <span asp-validation-for="@Model.Transaction.Transmitter" class="text-danger"></span>
+                        <label asp-for="@Model.Transaction.Transaction.Transmitter" class="control-label"></label>
+                        <input asp-for="@Model.Transaction.Transaction.Transmitter" class="form-control" />
+                        <span asp-validation-for="@Model.Transaction.Transaction.Transmitter" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.Transaction.Receiver" class="control-label"></label>
-                        <input asp-for="@Model.Transaction.Receiver" class="form-control" />
-                        <span asp-validation-for="@Model.Transaction.Receiver" class="text-danger"></span>
+                        <label asp-for="@Model.Transaction.Transaction.Receiver" class="control-label"></label>
+                        <input asp-for="@Model.Transaction.Transaction.Receiver" class="form-control" />
+                        <span asp-validation-for="@Model.Transaction.Transaction.Receiver" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.Transaction.Message" class="control-label"></label>
-                        <input asp-for="@Model.Transaction.Message" class="form-control" />
-                        <span asp-validation-for="@Model.Transaction.Message" class="text-danger"></span>
+                        <label asp-for="@Model.Transaction.Transaction.Message" class="control-label"></label>
+                        <input asp-for="@Model.Transaction.Transaction.Message" class="form-control" />
+                        <span asp-validation-for="@Model.Transaction.Transaction.Message" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <input asp-for="@Model.Transaction.Month" type="hidden" />
+                        <input asp-for="@Model.Transaction.Year" type="hidden" />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -299,7 +372,88 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="TransactionForEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Adding a new budget</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="EditTransaction" id="TransactionForEditForm">
+                <div class="modal-body">
+                    <div class="text-danger">
+                        <p>
+                            <ul id="errorListTransactionForEditModal"></ul>
+                            <script>
+                                var obj = JSON.parse(@Json.Serialize(ViewBag.ErrorNotificationTransactionForEditModal));
+                                var ul = document.getElementById("errorListTransactionForEditModal");
+                                if (obj) {
+                                    for (const key in obj.errors) {
+                                        var li = document.createElement("li");
+                                        li.appendChild(document.createTextNode(`${obj.errors[key]}`));
+                                        ul.appendChild(li);
+                                    }
+                                }
 
+                            </script>
+                        </p>
+                    </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="@Model.TransactionForEdit.TransactionForEdit.Amount" class="control-label"></label>
+                        <input asp-for="@Model.TransactionForEdit.TransactionForEdit.Amount" class="form-control" />
+                        <input asp-for="@Model.TransactionForEdit.TransactionForEdit.Id" type="hidden" class="form-control" />
+                        <input asp-for="@Model.TransactionForEdit.TransactionForEdit.BudgetId" type="hidden" class="form-control" />
+                        <span asp-validation-for="@Model.TransactionForEdit.TransactionForEdit.Amount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.TransactionForEdit.TransactionForEdit.Description" class="control-label"></label>
+                        <textarea asp-for="@Model.TransactionForEdit.TransactionForEdit.Description" class="form-control" rows="5" cols="40"></textarea>
+                        <span asp-validation-for="@Model.TransactionForEdit.TransactionForEdit.Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.TransactionForEdit.TransactionForEdit.CategoryId" class="control-label"></label>
+                        <select asp-for="@Model.TransactionForEdit.TransactionForEdit.CategoryId" asp-items="@Model.TransactionForEdit.TransactionForEdit.Categories" class="browser-default custom-select">
+                            <option value=""></option>
+                        </select>
+                        <span asp-validation-for="@Model.TransactionForEdit.TransactionForEdit.CategoryId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.TransactionForEdit.TransactionForEdit.Date" class="control-label"></label>
+                        <input asp-for="@Model.TransactionForEdit.TransactionForEdit.Date" asp-format="{0:dd/MM/yyyy}" class="form-control" type='text' />
+                        <span asp-validation-for="@Model.TransactionForEdit.TransactionForEdit.Date" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.TransactionForEdit.TransactionForEdit.Transmitter" class="control-label"></label>
+                        <input asp-for="@Model.TransactionForEdit.TransactionForEdit.Transmitter" class="form-control" />
+                        <span asp-validation-for="@Model.TransactionForEdit.TransactionForEdit.Transmitter" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.TransactionForEdit.TransactionForEdit.Receiver" class="control-label"></label>
+                        <input asp-for="@Model.TransactionForEdit.TransactionForEdit.Receiver" class="form-control" />
+                        <span asp-validation-for="@Model.TransactionForEdit.TransactionForEdit.Receiver" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.TransactionForEdit.TransactionForEdit.Message" class="control-label"></label>
+                        <input asp-for="@Model.TransactionForEdit.TransactionForEdit.Message" class="form-control" />
+                        <span asp-validation-for="@Model.TransactionForEdit.TransactionForEdit.Message" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <input asp-for="@Model.TransactionForEdit.Month" type="hidden" />
+                        <input asp-for="@Model.TransactionForEdit.Year" type="hidden" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="ModelNewCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -325,19 +479,20 @@
                                         li.appendChild(document.createTextNode(`${obj.errors[key]}`));
                                         ul.appendChild(li);
                                     }
-                                }
+                   Budget             }
                             </script>
                         </p>
                     </div>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="@Model.Category.Name" class="control-label"></label>
-                        <input asp-for="@Model.Category.Name" class="form-control" />
-                        <input asp-for="@Model.Category.BudgetId" type="hidden" class="form-control" />
-                        <span asp-validation-for="@Model.Category.Name" class="text-danger"></span>
+                        <label asp-for="@Model.Category.Category.Name" class="control-label"></label>
+                        <input asp-for="@Model.Category.Category.Name" class="form-control" />
+                        <input asp-for="@Model.Category.Category.BudgetId" type="hidden" class="form-control" />
+                        <span asp-validation-for="@Model.Category.Category.Name" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-
+                    <div>
+                        <input asp-for="@Model.Category.Month" type="hidden" />
+                        <input asp-for="@Model.Category.Year" type="hidden" />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -379,14 +534,15 @@
                     </div>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="@Model.TransactionForEdit.CategoryId" class="control-label"></label>
-                        <select asp-for="@Model.TransactionForEdit.CategoryId" asp-items="@Model.Transaction.Categories" class="browser-default custom-select"></select>
-                        <input asp-for="@Model.TransactionForEdit.Id" type="hidden" class="form-control" />
-                        <input asp-for="@Model.TransactionForEdit.BudgetId" type="hidden" class="form-control" />
-                        <span asp-validation-for="@Model.TransactionForEdit.CategoryId" class="text-danger"></span>
+                        <label asp-for="@Model.TransactionForEdit.TransactionForEdit.CategoryId" class="control-label"></label>
+                        <select asp-for="@Model.TransactionForEdit.TransactionForEdit.CategoryId" asp-items="@Model.Transaction.Transaction.Categories" class="browser-default custom-select"></select>
+                        <input asp-for="@Model.TransactionForEdit.TransactionForEdit.Id" type="hidden" class="form-control" />
+                        <input asp-for="@Model.TransactionForEdit.TransactionForEdit.BudgetId" type="hidden" class="form-control" />
+                        <span asp-validation-for="@Model.TransactionForEdit.TransactionForEdit.CategoryId" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-
+                    <div>
+                        <input asp-for="@Model.TransactionForEdit.Month" type="hidden" />
+                        <input asp-for="@Model.TransactionForEdit.Year" type="hidden" />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -405,11 +561,13 @@
         $('#ModalAddTransaction').modal('show');
     </script>
 }
-<script>
-    $(document).ready(function () {
-        $('#Transaction_Date').datepicker();
-    });
-</script>
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorNotificationTransactionForEditModal))
+{
+    <script>
+        $('#TransactionForEditModal').modal('show');
+    </script>
+}
 
 @if (!string.IsNullOrEmpty(ViewBag.ErrorNotificationNewCategoryModal))
 {
@@ -424,3 +582,72 @@
         $('#ModelAddCategory').modal('show');
     </script>
 }
+
+<script>
+    var transactionForEditAmount;
+    $(document).ready(function () {
+        var transaction = new AutoNumeric('#Transaction_Transaction_Amount', 'French'); // With the default options
+        transactionForEditAmount = new AutoNumeric('#TransactionForEdit_TransactionForEdit_Amount', 'French'); // With the default options
+
+        $('#Transaction_Transaction_Date').datepicker({
+            fautoclose: true,
+            startDate: '-5y',
+            endDate: '+2y',
+            format: 'dd-mm-yyyy'
+        });
+
+        $('#TransactionForEdit_TransactionForEdit_Date').datepicker({
+            fautoclose: true,
+            startDate: '-5y',
+            endDate: '+2y',
+            format: 'dd-mm-yyyy'
+        });
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        var month = urlParams.get('month')
+        var year = urlParams.get('year')
+        var today = new Date();
+        if (month == "" || month == null || year == "" || year == null) {
+            month = today.getMonth() + 1;
+            year = today.getFullYear();
+        }
+
+        $('#month').val(month);
+        $('#year').val(year);
+    });
+
+    window.onload = function () {
+        document.getElementById("CreateTransactionForm").onsubmit = function onSubmit(form) {
+            var money = document.getElementById("Transaction_Transaction_Amount").value;
+            var calculableMoney = money.replaceAll("€", "");
+            var calculableMoney = calculableMoney.replaceAll(" ", "");
+            var calculableMoney = calculableMoney.replaceAll(".", "");
+            document.getElementById("Transaction_Transaction_Amount").value = calculableMoney.replace(/\s/g, '');
+            return true;
+        }
+
+        document.getElementById("TransactionForEditForm").onsubmit = function onSubmit(form) {
+            var money = document.getElementById("TransactionForEdit_TransactionForEdit_Amount").value;
+            var calculableMoney = money.replaceAll("€", "");
+            var calculableMoney = calculableMoney.replaceAll(" ", "");
+            var calculableMoney = calculableMoney.replaceAll(".", "");
+            document.getElementById("TransactionForEdit_TransactionForEdit_Amount").value = calculableMoney.replace(/\s/g, '');
+            return true;
+        }
+    }
+
+    function SetupModalForTransactionEdit(id, BudgetId, Amount, Description, CategoryId, Date, Transmitter, Receiver, Message) {
+        $('#TransactionForEdit_TransactionForEdit_Id').val(id);
+        $('#TransactionForEdit_TransactionForEdit_BudgetId').val(BudgetId);
+        transactionForEditAmount.set(Amount)
+        $('#TransactionForEdit_TransactionForEdit_Description').val(Description);
+        $('#TransactionForEdit_TransactionForEdit_CategoryId').val(CategoryId);
+        $('#TransactionForEdit_TransactionForEdit_Date').val(Date);
+        $('#TransactionForEdit_TransactionForEdit_Transmitter').val(Transmitter);
+        $('#TransactionForEdit_TransactionForEdit_Receiver').val(Receiver);
+        $('#TransactionForEdit_TransactionForEdit_Message').val(Message);
+    }
+</script>
+
+

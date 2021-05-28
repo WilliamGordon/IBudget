@@ -2,6 +2,7 @@
 using FluentValidation;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 
 namespace ibudget.application.Transactions.Commands.CreateTransaction
 {
@@ -19,7 +20,7 @@ namespace ibudget.application.Transactions.Commands.CreateTransaction
                .NotEmpty().WithMessage("Amount is required");
 
             RuleFor(v => v.Date)
-               .NotEmpty().WithMessage("Date is required");
+               .Must(BeAValidDate).WithMessage("Date is required");
 
             RuleFor(v => v.Description)
                .NotEmpty().WithMessage("Description is required");
@@ -28,10 +29,14 @@ namespace ibudget.application.Transactions.Commands.CreateTransaction
                .NotEmpty().WithMessage("Message is required");
 
             RuleFor(v => v.Receiver)
-               .NotEmpty().WithMessage("Date is required");
+               .NotEmpty().WithMessage("Receiver is required");
 
             RuleFor(v => v.Transmitter)
-               .NotEmpty().WithMessage("Date is required");
+               .NotEmpty().WithMessage("Transmitter is required");
+        }
+        private bool BeAValidDate(DateTime date)
+        {
+            return !date.Equals(default(DateTime));
         }
     }
 }

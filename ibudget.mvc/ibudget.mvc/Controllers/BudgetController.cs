@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ibudget.mvc.Models.EditModel;
+using ibudget.mvc.Models.ComplexeModel;
 
 namespace ibudget.mvc.Controllers
 {
@@ -23,8 +24,9 @@ namespace ibudget.mvc.Controllers
         {
             this.Configuration = Configuration;
         }
-
+#nullable enable
         public async Task<IActionResult> DashboardBudgets(BudgetCreateModel? budget)
+#nullable disable
         {
             try
             {
@@ -123,15 +125,24 @@ namespace ibudget.mvc.Controllers
                 return RedirectToAction(nameof(DashboardBudgets), budget);
             }
         }
-
-        public async Task<IActionResult> DashboardBudget(int id)
+#nullable enable
+        public async Task<IActionResult> DashboardBudget(int id, string? month, string? year)
+#nullable disable
         {
             try
             {
                 ViewBag.ErrorNotification = TempData["ErrorNotification"];
                 ViewBag.ErrorNotificationTransactionModal = TempData["ErrorNotificationTransactionModal"];
+                ViewBag.ErrorNotificationTransactionForEditModal = TempData["ErrorNotificationTransactionForEditModal"];
                 ViewBag.ErrorNotificationNewCategoryModal = TempData["ErrorNotificationNewCategoryModal"];
                 ViewBag.ErrorNotificationAddCategoryModal = TempData["ErrorNotificationAddCategoryModal"];
+                // check if controller parameters are correctly set
+                if (String.IsNullOrEmpty(month) || String.IsNullOrEmpty(year))
+                {
+                    month = DateTime.Now.Month.ToString();
+                    year = DateTime.Now.Year.ToString();
+                }
+
                 // Getting Auth0 parameters
                 var UserId = User.Claims.Where(m => m.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").FirstOrDefault().Value;
                 var AccessToken = await HttpContext.GetTokenAsync("access_token");
@@ -141,7 +152,7 @@ namespace ibudget.mvc.Controllers
                 requestBudget.AddHeader("authorization", $"Bearer {AccessToken}");
 
                 // Configuration API Call with RestSharp
-                var clientTransaction = new RestClient($"{Configuration["Auth0:Audience"]}/api/Transaction/GetAllTransactionsForBudget/" + id);
+                var clientTransaction = new RestClient($"{Configuration["Auth0:Audience"]}/api/Transaction/GetAllTransactionsForBudget/{id}/{month}/{year}");
                 var requestTransaction = new RestRequest(Method.GET);
                 requestTransaction.AddHeader("authorization", $"Bearer {AccessToken}");
 
@@ -151,33 +162,64 @@ namespace ibudget.mvc.Controllers
                 requestCategory.AddHeader("authorization", $"Bearer {AccessToken}");
 
                 // Handling creating of new transaction
-                TransactionCreateModel transaction = new TransactionCreateModel
+                TransactionCreateComplexeModel transaction = new TransactionCreateComplexeModel
                 {
-                    BudgetId = id
+                    Transaction = new TransactionCreateModel
+                    {
+                        BudgetId = id,
+                        Date = DateTime.Now,
+                    },
+                    Month = month,
+                    Year = year,
                 };
                 if (TempData["transaction"] != null)
                 {
-                    transaction = JsonConvert.DeserializeObject< TransactionCreateModel>(TempData["transaction"].ToString());
+                    transaction = JsonConvert.DeserializeObject<TransactionCreateComplexeModel>(TempData["transaction"].ToString());
                 }
 
-                // Handling editing transaction
-                TransactionCategoryEditModel transactionForEdit = new TransactionCategoryEditModel
+                // Handling editing transaction category
+                TransactionEditComplexeModel transactionForEdit = new TransactionEditComplexeModel
                 {
-                    BudgetId = id
+                    TransactionForEdit = new TransactionEditModel
+                    {
+                        BudgetId = id
+                    },
+                    Month = month,
+                    Year = year,
                 };
                 if (TempData["transactionForEdit"] != null)
                 {
-                    transactionForEdit = JsonConvert.DeserializeObject<TransactionCategoryEditModel>(TempData["transactionForEdit"].ToString());
+                    transactionForEdit = JsonConvert.DeserializeObject<TransactionEditComplexeModel>(TempData["transactionForEdit"].ToString());
+                }
+
+                // Handling editing transaction category
+                TransactionCategoryEditComplexeModel transactionCategoryForEdit = new TransactionCategoryEditComplexeModel
+                {
+                    TransactionCategoryForEdit = new TransactionCategoryEditModel
+                    {
+                        BudgetId = id
+                    },
+                    Month = month,
+                    Year = year,
+                };
+                if (TempData["transactionCategoryForEdit"] != null)
+                {
+                    transactionCategoryForEdit = JsonConvert.DeserializeObject<TransactionCategoryEditComplexeModel>(TempData["transactionCategoryForEdit"].ToString());
                 }
 
                 // Handling creating of new category
-                CategoryCreateModel category = new CategoryCreateModel
+                CategoryCreateComplexeModel category = new CategoryCreateComplexeModel
                 {
-                    BudgetId = id
+                    Category = new CategoryCreateModel
+                    {
+                        BudgetId = id
+                    },
+                    Month = month,
+                    Year = year,
                 };
                 if (TempData["category"] != null)
                 {
-                    category = JsonConvert.DeserializeObject<CategoryCreateModel>(TempData["category"].ToString());
+                    category = JsonConvert.DeserializeObject<CategoryCreateComplexeModel>(TempData["category"].ToString());
                 }
 
                 // Executing API Call with RestSharp
@@ -189,8 +231,9 @@ namespace ibudget.mvc.Controllers
                 {
                     foreach (var c in responseCategory.Data)
                     {
-                        transaction.Categories.Add(new SelectListItem { Value = c.Id.ToString(), Text = c.Name });
-                        transactionForEdit.Categories.Add(new SelectListItem { Value = c.Id.ToString(), Text = c.Name });
+                        transaction.Transaction.Categories.Add(new SelectListItem { Value = c.Id.ToString(), Text = c.Name });
+                        transactionForEdit.TransactionForEdit.Categories.Add(new SelectListItem { Value = c.Id.ToString(), Text = c.Name });
+                        transactionCategoryForEdit.TransactionCategoryForEdit.Categories.Add(new SelectListItem { Value = c.Id.ToString(), Text = c.Name });
                     }
 
                     ViewData.Model = new DashboardBudgetComplexeModel
@@ -198,6 +241,7 @@ namespace ibudget.mvc.Controllers
                         Budget = responseBudget.Data,
                         Transactions = responseTransaction.Data,
                         Categories = responseCategory.Data,
+                        TransactionCategoryForEdit = transactionCategoryForEdit,
                         TransactionForEdit = transactionForEdit,
                         Transaction = transaction,
                         Category = category,
@@ -212,6 +256,7 @@ namespace ibudget.mvc.Controllers
                         Budget = null,
                         Transactions = null,
                         Categories = null,
+                        TransactionCategoryForEdit = transactionCategoryForEdit,
                         TransactionForEdit = transactionForEdit,
                         Transaction = transaction,
                         Category = category
@@ -228,7 +273,7 @@ namespace ibudget.mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateTransaction(TransactionCreateModel transaction)
+        public async Task<IActionResult> CreateTransaction(TransactionCreateComplexeModel transaction)
         {
             try
             {
@@ -241,7 +286,7 @@ namespace ibudget.mvc.Controllers
                 request.RequestFormat = DataFormat.Json;
                 request.AddHeader("Content-Type", "application/json;");
                 request.AddHeader("authorization", $"Bearer {AccessToken}");
-                request.AddJsonBody(transaction);
+                request.AddJsonBody(transaction.Transaction);
 
                 // Executing API Call with RestSharp
                 var response = client.Post(request);
@@ -250,7 +295,9 @@ namespace ibudget.mvc.Controllers
                 {
                     return RedirectToAction(nameof(DashboardBudget), new
                     {
-                        Id = transaction.BudgetId
+                        Id = transaction.Transaction.BudgetId,
+                        month = transaction.Transaction.Date.Month,
+                        year = transaction.Transaction.Date.Year,
                     });
                 }
                 else
@@ -259,7 +306,9 @@ namespace ibudget.mvc.Controllers
                     TempData["transaction"] = JsonConvert.SerializeObject(transaction);
                     return RedirectToAction(nameof(DashboardBudget), new
                     {
-                        Id = transaction.BudgetId,
+                        Id = transaction.Transaction.BudgetId,
+                        month = transaction.Month,
+                        year = transaction.Year,
                     });
                 }
             }
@@ -268,20 +317,22 @@ namespace ibudget.mvc.Controllers
                 TempData["ErrorNotification"] = ex;
                 return RedirectToAction(nameof(DashboardBudget), new
                 {
-                    Id = transaction.BudgetId
+                    Id = transaction.Transaction.BudgetId,
+                    month = transaction.Month,
+                    year = transaction.Year,
                 });
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCategory(CategoryCreateModel category)
+        public async Task<IActionResult> CreateCategory(CategoryCreateComplexeModel category)
         {
             try
             {
-                if (category.ParentId == null)
+                if (category.Category.ParentId == null)
                 {
-                    category.ParentId = 0;
+                    category.Category.ParentId = 0;
                 }
                 // Getting Auth0 parameters
                 var AccessToken = await HttpContext.GetTokenAsync("access_token");
@@ -292,7 +343,7 @@ namespace ibudget.mvc.Controllers
                 request.RequestFormat = DataFormat.Json;
                 request.AddHeader("Content-Type", "application/json;");
                 request.AddHeader("authorization", $"Bearer {AccessToken}");
-                request.AddJsonBody(JsonConvert.SerializeObject(category));
+                request.AddJsonBody(JsonConvert.SerializeObject(category.Category));
 
                 // Executing API Call with RestSharp
                 var response = client.Post(request);
@@ -301,7 +352,9 @@ namespace ibudget.mvc.Controllers
                 {
                     return RedirectToAction(nameof(DashboardBudget), new
                     {
-                        Id = category.BudgetId
+                        Id = category.Category.BudgetId,
+                        month = category.Month,
+                        year = category.Year,
                     });
                 }
                 else
@@ -310,7 +363,9 @@ namespace ibudget.mvc.Controllers
                     TempData["category"] = JsonConvert.SerializeObject(category);
                     return RedirectToAction(nameof(DashboardBudget), new
                     {
-                        Id = category.BudgetId,
+                        Id = category.Category.BudgetId,
+                        month = category.Month,
+                        year = category.Year,
                     });
                 }
             }
@@ -319,15 +374,16 @@ namespace ibudget.mvc.Controllers
                 TempData["ErrorNotification"] = ex;
                 return RedirectToAction(nameof(DashboardBudget), new
                 {
-                    Id = category.BudgetId
+                    Id = category.Category.BudgetId,
+                    month = category.Month,
+                    year = category.Year,
                 });
             }
         }
-
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTransactionCategory(TransactionCategoryEditModel transactionForEdit)
+        public async Task<IActionResult> EditTransaction(TransactionEditComplexeModel transactionForEdit)
         {
             try
             {
@@ -335,12 +391,12 @@ namespace ibudget.mvc.Controllers
                 var AccessToken = await HttpContext.GetTokenAsync("access_token");
 
                 // Configuration API Call with RestSharp
-                var client = new RestClient($"{Configuration["Auth0:Audience"]}/api/Transaction/UpdateTransactionCategory/{transactionForEdit.Id}");
+                var client = new RestClient($"{Configuration["Auth0:Audience"]}/api/Transaction/UpdateTransaction/{transactionForEdit.TransactionForEdit.Id}");
                 var request = new RestRequest(Method.PUT);
                 request.RequestFormat = DataFormat.Json;
                 request.AddHeader("Content-Type", "application/json;");
                 request.AddHeader("authorization", $"Bearer {AccessToken}");
-                request.AddJsonBody(JsonConvert.SerializeObject(transactionForEdit));
+                request.AddJsonBody(JsonConvert.SerializeObject(transactionForEdit.TransactionForEdit));
 
                 // Executing API Call with RestSharp
                 var response = client.Put(request);
@@ -349,16 +405,20 @@ namespace ibudget.mvc.Controllers
                 {
                     return RedirectToAction(nameof(DashboardBudget), new
                     {
-                        Id = transactionForEdit.BudgetId
+                        Id = transactionForEdit.TransactionForEdit.BudgetId,
+                        month = transactionForEdit.Month,
+                        year = transactionForEdit.Year,
                     });
                 }
                 else
                 {
-                    TempData["ErrorNotificationAddCategoryModal"] = response.Content;
+                    TempData["ErrorNotificationTransactionForEditModal"] = response.Content;
                     TempData["transactionForEdit"] = JsonConvert.SerializeObject(transactionForEdit);
                     return RedirectToAction(nameof(DashboardBudget), new
                     {
-                        Id = transactionForEdit.BudgetId,
+                        Id = transactionForEdit.TransactionForEdit.BudgetId,
+                        month = transactionForEdit.Month,
+                        year = transactionForEdit.Year,
                     });
                 }
             }
@@ -367,7 +427,62 @@ namespace ibudget.mvc.Controllers
                 TempData["ErrorNotification"] = ex;
                 return RedirectToAction(nameof(DashboardBudget), new
                 {
-                    Id = transactionForEdit.BudgetId
+                    Id = transactionForEdit.TransactionForEdit.BudgetId,
+                    month = transactionForEdit.Month,
+                    year = transactionForEdit.Year,
+                });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditTransactionCategory(TransactionCategoryEditComplexeModel transactionCategoryForEdit)
+        {
+            try
+            {
+                // Getting Auth0 parameters
+                var AccessToken = await HttpContext.GetTokenAsync("access_token");
+
+                // Configuration API Call with RestSharp
+                var client = new RestClient($"{Configuration["Auth0:Audience"]}/api/Transaction/UpdateTransactionCategory/{transactionCategoryForEdit.TransactionCategoryForEdit.Id}");
+                var request = new RestRequest(Method.PUT);
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json;");
+                request.AddHeader("authorization", $"Bearer {AccessToken}");
+                request.AddJsonBody(JsonConvert.SerializeObject(transactionCategoryForEdit.TransactionCategoryForEdit));
+
+                // Executing API Call with RestSharp
+                var response = client.Put(request);
+
+                if (response.IsSuccessful)
+                {
+                    return RedirectToAction(nameof(DashboardBudget), new
+                    {
+                        Id = transactionCategoryForEdit.TransactionCategoryForEdit.BudgetId,
+                        month = transactionCategoryForEdit.Month,
+                        year = transactionCategoryForEdit.Year,
+                    });
+                }
+                else
+                {
+                    TempData["ErrorNotificationAddCategoryModal"] = response.Content;
+                    TempData["transactionCategoryForEdit"] = JsonConvert.SerializeObject(transactionCategoryForEdit);
+                    return RedirectToAction(nameof(DashboardBudget), new
+                    {
+                        Id = transactionCategoryForEdit.TransactionCategoryForEdit.BudgetId,
+                        month = transactionCategoryForEdit.Month,
+                        year = transactionCategoryForEdit.Year,
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorNotification"] = ex;
+                return RedirectToAction(nameof(DashboardBudget), new
+                {
+                    Id = transactionCategoryForEdit.TransactionCategoryForEdit.BudgetId,
+                    month = transactionCategoryForEdit.Month,
+                    year = transactionCategoryForEdit.Year,
                 });
             }
         }

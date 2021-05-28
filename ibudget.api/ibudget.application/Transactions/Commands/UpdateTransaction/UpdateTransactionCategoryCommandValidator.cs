@@ -14,7 +14,7 @@ namespace ibudget.application.Transactions.Commands.UpdateTransaction
             _context = context;
 
             RuleFor(v => v.CategoryId)
-               .NotEmpty().WithMessage("Date is required");
+               .NotEmpty().WithMessage("CategoryId is required");
         }
     }
 }
