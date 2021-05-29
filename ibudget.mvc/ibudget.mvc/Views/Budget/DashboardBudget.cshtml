@@ -5,114 +5,6 @@
 }
 <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.1.0"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
-
-
-    // GetDataTransaction
-    var transactions = JSON.parse(JSON.stringify(@Json.Serialize(Model.Transactions)));
-    var categories = JSON.parse(JSON.stringify(@Json.Serialize(Model.Categories)));
-
-    var dateTransactionsCategories = [["Categories", "Overall"]];
-    var dateIncomeExpense;
-    var totalBySpending = 0;
-    // Loop overeach categories
-    for (var i = 0; i < categories.length; i++) {
-        var catArray = [categories[i].name, 0]
-        // Loop overeach transaction, and check if part of current category
-        for (var j = 0; j < transactions.length; j++) {
-            if (transactions[j].categoryId == categories[i].id) {
-                if (transactions[j].amount < 0) {
-                    catArray[1] = catArray[1] + Math.abs(transactions[j].amount);
-                    totalBySpending = totalBySpending + Math.abs(transactions[j].amount);
-                }
-            }
-        }
-        dateTransactionsCategories.push(catArray);
-    }
-    console.log(dateTransactionsCategories);
-
-    var struct = ['Element', 'Total', { role: 'style' }, { role: 'annotation' }]
-    var Income = ['Income', 0, '#b87333','Cu']
-    var Expense = ['Expense', 0, 'silver','Ag']
-    var Savings = ['Saving', 0, 'gold','Au']
-
-    for (var i = 0; i < transactions.length; i++) {
-        var datetransaction = new Date(transactions[i].date)
-        if (transactions[i].amount < 0) {
-            if (transactions[i].receiver == '375-4285670-95') {
-                Savings[1] = Savings[1] + Math.abs(transactions[i].amount)
-            } else {
-                Expense[1] = Expense[1] + Math.abs(transactions[i].amount)
-            }
-        } else {
-            Income[1] = Income[1] + Math.abs(transactions[i].amount)
-        }
-    }
-
-    dateIncomeExpense = [struct, Income, Expense, Savings]
-    console.log(dateIncomeExpense);
-
-    google.load("visualization", "1", {
-        packages: ["corechart"]
-    });
-    google.setOnLoadCallback(initChartCategpry);
-    google.setOnLoadCallback(initChartExpense);
-
-    $(window).on("throttledresize", function (event) {
-        initChartCategpry();
-        //initChartExpense();
-    });
-
-    function initChartCategpry() {
-
-        var options = {
-            legend: 'none',
-            width: '100%',
-            height: '100%',
-            pieSliceText: 'label',
-            chartArea: {
-                left: "3%",
-                top: "3%",
-                height: "94%",
-                width: "94%"
-            }
-        };
-
-        var data = google.visualization.arrayToDataTable(dateTransactionsCategories);
-        drawChartCategory(data, options)
-        document.getElementById("totalCategorySpending").innerHTML = totalBySpending + " €"
-    }
-    function initChartExpense() {
-
-        var data = google.visualization.arrayToDataTable(dateIncomeExpense);
-
-        var options = {
-            legend: 'none',
-            width: '100%',
-            height: '100%',
-            title: 'Income/Expense for Month',
-            bar: { groupWidth: "95%" },
-            legend: { position: 'bottom' },
-            chartArea: {
-                left: "10%",
-                top: "10%",
-                height: "85%",
-                width: "85%"
-            }
-        };
-        drawChartExpense(data, options)
-    }
-
-    function drawChartCategory(data, options) {
-        var chart = new google.visualization.PieChart(document.getElementById('chart_category'));
-        chart.draw(data, options);
-    }
-
-    function drawChartExpense(data, options) {
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_expense'));
-        chart.draw(data, options);
-    }
-</script>
 <style>
     @@media only screen and (min-width : 1200px) {
         .container {
@@ -216,72 +108,85 @@
                     <option value="2025">2025</option>
                 </select>
             </div>
-            <div class="table-responsive">
-                <table class="table table-sm table-hover">
-                    <thead>
-                        <tr>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th>Message</th>
-                            <th>Category</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Transaction != null)
-                        {
-                            @foreach (var item in Model.Transactions)
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Transaction != null)
                             {
-                                <tr style="cursor: pointer;" onclick="window.location='#';">
-                                    <td>@item.Amount</td>
-                                    <td>@item.Date.ToShortDateString()</td>
-                                    <td>@item.Message</td>
-                                    @{
-                                        var category = Model.Categories.SingleOrDefault(c => c.Id == item.CategoryId);
-                                        if (category != null)
-                                        {
-                                            <td>
-                                                <p>@category.Name</p>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#ModelAddCategory" onclick="$('#TransactionCategoryForEdit_TransactionCategoryForEdit_Id').val('@item.Id'); $('#TransactionCategoryForEdit_TransactionCategoryForEdit_CategoryId').val('@item.CategoryId');">
-                                                    Edit Category
-                                                </button>
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#TransactionForEditModal" onclick="SetupModalForTransactionEdit('@item.Id', '@item.BudgetId', '@item.Amount', '@item.Description', '@item.CategoryId', '@item.Date', '@item.Transmitter', '@item.Receiver', '@item.Message');">
-                                                    Edit
-                                                </button>
-                                            </td>
+                                @foreach (var item in Model.Transactions)
+                                {
+                                    <tr>
+                                        <td style="cursor: pointer;" onclick="$('#TransactionCategoryForDetailsModal').modal('show');setupTransactionForDetailsModal('@item.Id');">@item.Amount <span>€</span></td>
+                                        <td style="cursor: pointer;" onclick="$('#TransactionCategoryForDetailsModal').modal('show');setupTransactionForDetailsModal('@item.Id');">@item.Date.ToShortDateString()</td>
+                                        @{
+                                            var category = Model.Categories.SingleOrDefault(c => c.Id == item.CategoryId);
+                                            var description = item.Description;
+                                            if (description.Length > 100) {
+                                                description = description.Substring(0, Math.Min(description.Length, 100));
+                                            }
+                                            if (category != null)
+                                            {
+                                                <td style="cursor: pointer;" onclick="$('#TransactionCategoryForDetailsModal').modal('show');setupTransactionForDetailsModal('@item.Id');">
+                                                    <p>@category.Name</p>
+                                                </td>
+                                                <td style="width:880px; cursor: pointer;" onclick="$('#TransactionCategoryForDetailsModal').modal('show');setupTransactionForDetailsModal('@item.Id');">
+                                                    @description
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#TransactionCategoryForEditModal" onclick="$('#TransactionCategoryForEdit_TransactionCategoryForEdit_Id').val('@item.Id'); $('#TransactionCategoryForEdit_TransactionCategoryForEdit_CategoryId').val('@item.CategoryId');">
+                                                        Edit Category
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#TransactionForEditModal" onclick="setupTransactionForEditModal('@item.Id');">
+                                                        Edit
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger" onclick="window.location.replace('/Budget/DeleteTransaction/@item.Id?budgetid=@item.BudgetId&month=' + $('#month').val() + '&year=' + $('#year').val());">X</button>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td style="cursor: pointer;" onclick="$('#TransactionCategoryForDetailsModal').modal('show');setupTransactionForDetailsModal('@item.Id');">
+                                                    <p>None</p>
+                                                </td>
+                                                <td style="width:880px; cursor: pointer;" onclick="$('#TransactionCategoryForDetailsModal').modal('show');setupTransactionForDetailsModal('@item.Id');">
+                                                    @description
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#TransactionCategoryForEditModal" onclick="$('#TransactionCategoryForEdit_TransactionCategoryForEdit_Id').val('@item.Id')">
+                                                        Add Category
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#TransactionForEditModal" onclick="setupTransactionForEditModal('@item.Id');">
+                                                        Edit
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger" onclick="window.location.replace('/Budget/DeleteTransaction/@item.Id?budgetid=@item.BudgetId&month=' + $('#month').val() + '&year=' + $('#year').val());">X</button>
+                                                </td>
+                                            }
                                         }
-                                        else
-                                        {
-                                            <td>
-                                                <p>None</p>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModelAddCategory" onclick="$('#TransactionCategoryForEdit_TransactionCategoryForEdit_Id').val('@item.Id')">
-                                                    Add Category
-                                                </button>
-                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#TransactionForEditModal" onclick="SetupModalForTransactionEdit('@item.Id', '@item.BudgetId', '@item.Amount', '@item.Description', '@item.CategoryId', '@item.Date', '@item.Transmitter', '@item.Receiver', '@item.Message');">
-                                                    Edit
-                                                </button>
-                                            </td>
-                                        }
-                                    }
-                                </tr>
+                                    </tr>
+                                }
                             }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="card-footer">
             <small class="text-muted">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAddTransaction">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#TransactionForCreateModal">
                     New transaction
                 </button>
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModelNewCategory">
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#CateogryForCreateModal">
                     New category
                 </button>
             </small>
@@ -289,25 +194,23 @@
     </div>
 </div>
 
-
-<!-- Modal -->
-<div class="modal fade" id="ModalAddTransaction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="TransactionForCreateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Adding a new budget</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add a new transaction</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form asp-action="CreateTransaction" id="CreateTransactionForm">
+            <form asp-action="CreateTransaction" id="TransactionForCreateForm">
                 <div class="modal-body">
                     <div class="text-danger">
                         <p>
-                            <ul id="errorListTransactionModal"></ul>
+                            <ul id="errorListTransactionForCreateModal"></ul>
                             <script>
-                                var obj = JSON.parse(@Json.Serialize(ViewBag.ErrorNotificationTransactionModal));
-                                var ul = document.getElementById("errorListTransactionModal");
+                                var obj = JSON.parse(@Json.Serialize(ViewBag.ErrorNotificationTransactionForCreateModal));
+                                var ul = document.getElementById("errorListTransactionForCreateModal");
                                 if (obj) {
                                     for (const key in obj.errors) {
                                         var li = document.createElement("li");
@@ -372,12 +275,11 @@
     </div>
 </div>
 
-<!-- Modal -->
 <div class="modal fade" id="TransactionForEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Adding a new budget</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Edit transaction</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -448,15 +350,100 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Edit" class="btn btn-primary" />
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="ModelNewCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="TransactionCategoryForDetailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Transaction details : <span id="TransactionIdDetails"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Description</h5>
+                <p id="TransactionDescriptionDetails"></p>
+                <hr>
+                <h5>Category</h5>
+                <p id="TransactionCateogryDetails"></p>
+                <hr>
+                <h5>Date</h5>
+                <p id="TransactionDateDetails"></p>
+                <hr>
+                <h5>Transmitter</h5>
+                <p id="TransactionTransmitterDetails"></p>
+                <hr>
+                <h5>Reciever</h5>
+                <p id="TransactionRecieverDetails"></p>
+                <hr>
+                <h5>Message</h5>
+                <p id="TransactionMessageDetails"></p>
+                <hr>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="TransactionCategoryForEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Adding a category for the transaction</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="EditTransactionCategory">
+                <div class="modal-body">
+                    <div class="text-danger">
+                        <p>
+                            <ul id="errorListCategoryForCreateModal"></ul>
+                            <script>
+                                var obj = JSON.parse(@Json.Serialize(ViewBag.ErrorNotificationCategoryForCreateModal));
+                                var ul = document.getElementById("errorListCategoryForCreateModal");
+                                if (obj) {
+                                    for (const key in obj.errors) {
+                                        var li = document.createElement("li");
+                                        li.appendChild(document.createTextNode(`${obj.errors[key]}`));
+                                        ul.appendChild(li);
+                                    }
+                                }
+                            </script>
+                        </p>
+                    </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="@Model.TransactionCategoryForEdit.TransactionCategoryForEdit.CategoryId" class="control-label"></label>
+                        <select asp-for="@Model.TransactionCategoryForEdit.TransactionCategoryForEdit.CategoryId" asp-items="@Model.Transaction.Transaction.Categories" class="browser-default custom-select"></select>
+                        <input asp-for="@Model.TransactionCategoryForEdit.TransactionCategoryForEdit.Id" type="hidden" class="form-control" />
+                        <input asp-for="@Model.TransactionCategoryForEdit.TransactionCategoryForEdit.BudgetId" type="hidden" class="form-control" />
+                        <span asp-validation-for="@Model.TransactionCategoryForEdit.TransactionCategoryForEdit.CategoryId" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <input asp-for="@Model.TransactionCategoryForEdit.Month" type="hidden" />
+                        <input asp-for="@Model.TransactionCategoryForEdit.Year" type="hidden" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Add" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="CateogryForCreateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -469,10 +456,10 @@
                 <div class="modal-body">
                     <div class="text-danger">
                         <p>
-                            <ul id="errorListNewCategoryModal"></ul>
+                            <ul id="errorListTransactionCategoryForEditModal"></ul>
                             <script>
-                                var obj = JSON.parse(@Json.Serialize(ViewBag.ErrorNotificationNewCategoryModal));
-                                var ul = document.getElementById("errorListNewCategoryModal");
+                                var obj = JSON.parse(@Json.Serialize(ViewBag.ErrorNotificationTransactionCategoryForEditModal));
+                                var ul = document.getElementById("errorListTransactionCategoryForEditModal");
                                 if (obj) {
                                     for (const key in obj.errors) {
                                         var li = document.createElement("li");
@@ -504,61 +491,10 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="ModelAddCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Adding a category for the transaction</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form asp-action="EditTransactionCategory">
-                <div class="modal-body">
-                    <div class="text-danger">
-                        <p>
-                            <ul id="errorListAddCategoryModal"></ul>
-                            <script>
-                                var obj = JSON.parse(@Json.Serialize(ViewBag.ErrorNotificationAddCategoryModal));
-                                var ul = document.getElementById("errorListAddCategoryModal");
-                                if (obj) {
-                                    for (const key in obj.errors) {
-                                        var li = document.createElement("li");
-                                        li.appendChild(document.createTextNode(`${obj.errors[key]}`));
-                                        ul.appendChild(li);
-                                    }
-                                }
-                            </script>
-                        </p>
-                    </div>
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="@Model.TransactionForEdit.TransactionForEdit.CategoryId" class="control-label"></label>
-                        <select asp-for="@Model.TransactionForEdit.TransactionForEdit.CategoryId" asp-items="@Model.Transaction.Transaction.Categories" class="browser-default custom-select"></select>
-                        <input asp-for="@Model.TransactionForEdit.TransactionForEdit.Id" type="hidden" class="form-control" />
-                        <input asp-for="@Model.TransactionForEdit.TransactionForEdit.BudgetId" type="hidden" class="form-control" />
-                        <span asp-validation-for="@Model.TransactionForEdit.TransactionForEdit.CategoryId" class="text-danger"></span>
-                    </div>
-                    <div>
-                        <input asp-for="@Model.TransactionForEdit.Month" type="hidden" />
-                        <input asp-for="@Model.TransactionForEdit.Year" type="hidden" />
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-@if (!string.IsNullOrEmpty(ViewBag.ErrorNotificationTransactionModal))
+@if (!string.IsNullOrEmpty(ViewBag.ErrorNotificationTransactionForCreateModal))
 {
     <script>
-        $('#ModalAddTransaction').modal('show');
+        $('#TransactionForCreateModal').modal('show');
     </script>
 }
 
@@ -569,26 +505,127 @@
     </script>
 }
 
-@if (!string.IsNullOrEmpty(ViewBag.ErrorNotificationNewCategoryModal))
+@if (!string.IsNullOrEmpty(ViewBag.ErrorNotificationTransactionCategoryForEditModal))
 {
     <script>
-        $('#ModelNewCategory').modal('show');
+        $('#CateogryForCreateModal').modal('show');
     </script>
 }
 
-@if (!string.IsNullOrEmpty(ViewBag.ErrorNotificationAddCategoryModal))
+@if (!string.IsNullOrEmpty(ViewBag.ErrorNotificationCategoryForCreateModal))
 {
     <script>
-        $('#ModelAddCategory').modal('show');
+        $('#TransactionCategoryForEditModal').modal('show');
     </script>
 }
 
 <script>
-    var transactionForEditAmount;
-    $(document).ready(function () {
-        var transaction = new AutoNumeric('#Transaction_Transaction_Amount', 'French'); // With the default options
-        transactionForEditAmount = new AutoNumeric('#TransactionForEdit_TransactionForEdit_Amount', 'French'); // With the default options
 
+    // Get transactions and categories as objects
+    var transactions = JSON.parse(JSON.stringify(@Json.Serialize(Model.Transactions)));
+    var categories = JSON.parse(JSON.stringify(@Json.Serialize(Model.Categories)));
+
+    // Construct data for google charts API Pie charts
+    function getTransactionsCategoriesDataForCharts() {
+        var transactionsCategoriesData = [["Categories", "Overall"]];
+        // Loop over each categories
+        categories.forEach(function(category) {
+            // Create array for the category
+            var categoryArray = [category.name, 0]
+            // Loop over each transaction
+            transactions.forEach(function(transaction) {
+                // Check if transaction is part of the category
+                if(transaction.categoryId === category.id) {
+                    categoryArray[1] = categoryArray[1] + Math.abs(transaction.amount);
+                }
+            }); 
+            transactionsCategoriesData.push(categoryArray);
+        });
+        return transactionsCategoriesData;
+    }
+
+    function getExpenseIncomeDataForCharts() {
+        var expenseIncomeData = [['Element', 'Total', { role: 'style' }, { role: 'annotation' }]];
+        var income = ['Income', 0, 'blue','Income'];
+        var expense = ['Expense', 0, 'red','Expense'];
+        // Loop over each transaction
+        transactions.forEach(function(transaction) {
+            // Check if transaction is an expense or an income
+            if (transaction.amount < 0) {
+                expense[1] = expense[1] + Math.abs(transaction.amount)
+            } else {
+                income[1] = income[1] + Math.abs(transaction.amount)
+            }
+        });
+        expenseIncomeData.push(income);
+        expenseIncomeData.push(expense);
+        return expenseIncomeData;
+    }
+
+    // Google API configuration
+    google.load("visualization", "1", {
+        packages: ["corechart"]
+    });
+
+    google.setOnLoadCallback(initChartTransactionsCategories);
+    google.setOnLoadCallback(initChartExpenseIncome);
+
+    // if window is resied, redraw the charts
+    $(window).on("throttledresize", function (event) {
+        initChartTransactionsCategories();
+        initChartExpenseIncome();
+    });
+
+    function initChartTransactionsCategories() {
+        var options = {
+            legend: 'none',
+            width: '100%',
+            height: '100%',
+            pieSliceText: 'label',
+            chartArea: {
+                left: "3%",
+                top: "3%",
+                height: "94%",
+                width: "94%"
+            }
+        };
+        drawChartCategory(google.visualization.arrayToDataTable(getTransactionsCategoriesDataForCharts()), options)
+        @* document.getElementById("totalCategorySpending").innerHTML = totalBySpending + " €" *@
+    }
+    function initChartExpenseIncome() {
+        var options = {
+            legend: 'none',
+            width: '100%',
+            height: '100%',
+            title: 'Income/Expense for Month',
+            bar: { groupWidth: "95%" },
+            legend: { position: 'bottom' },
+            chartArea: {
+                left: "10%",
+                top: "10%",
+                height: "85%",
+                width: "85%"
+            }
+        };
+        drawChartExpense(google.visualization.arrayToDataTable(getExpenseIncomeDataForCharts()), options)
+    }
+
+    function drawChartCategory(data, options) {
+        var chart = new google.visualization.PieChart(document.getElementById('chart_category'));
+        chart.draw(data, options);
+    }
+
+    function drawChartExpense(data, options) {
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_expense'));
+        chart.draw(data, options);
+    }
+
+    // Declaring autonumeric variables
+    var transactionAmountForCreate;
+    var transactionAmountForEdit;
+
+    $(document).ready(function () {
+        // configuring JQuery/Bootstrap Datepicker
         $('#Transaction_Transaction_Date').datepicker({
             fautoclose: true,
             startDate: '-5y',
@@ -602,11 +639,32 @@
             endDate: '+2y',
             format: 'dd-mm-yyyy'
         });
+        
+        // configuring JQuery autoNumeric for money fields
+        transactionAmountForCreate = new AutoNumeric('#Transaction_Transaction_Amount', 'French'); // With the default options
+        transactionAmountForEdit = new AutoNumeric('#TransactionForEdit_TransactionForEdit_Amount', 'French'); // With the default options
 
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
+        // Format money fields on submit
+        document.getElementById("TransactionForCreateForm").onsubmit = function onSubmit(form) {
+            var money = document.getElementById("Transaction_Transaction_Amount").value;
+            document.getElementById("Transaction_Transaction_Amount").value = formatMoney(money);
+            // proceed with normal submit behaviour
+            return true;
+        }
+
+        document.getElementById("TransactionForEditForm").onsubmit = function onSubmit(form) {
+            var money = document.getElementById("TransactionForEdit_TransactionForEdit_Amount").value;
+            document.getElementById("TransactionForEdit_TransactionForEdit_Amount").value = formatMoney(money);
+            // proceed with normal submit behaviour
+            return true;
+        }
+
+        // Set the Month and Year select fields by retreiving the value in the query URL
+        const urlParams = new URLSearchParams(window.location.search);
         var month = urlParams.get('month')
         var year = urlParams.get('year')
+        
+        // if one of those value are empty or null set it to today date
         var today = new Date();
         if (month == "" || month == null || year == "" || year == null) {
             month = today.getMonth() + 1;
@@ -617,37 +675,73 @@
         $('#year').val(year);
     });
 
-    window.onload = function () {
-        document.getElementById("CreateTransactionForm").onsubmit = function onSubmit(form) {
-            var money = document.getElementById("Transaction_Transaction_Amount").value;
-            var calculableMoney = money.replaceAll("€", "");
-            var calculableMoney = calculableMoney.replaceAll(" ", "");
-            var calculableMoney = calculableMoney.replaceAll(".", "");
-            document.getElementById("Transaction_Transaction_Amount").value = calculableMoney.replace(/\s/g, '');
-            return true;
-        }
-
-        document.getElementById("TransactionForEditForm").onsubmit = function onSubmit(form) {
-            var money = document.getElementById("TransactionForEdit_TransactionForEdit_Amount").value;
-            var calculableMoney = money.replaceAll("€", "");
-            var calculableMoney = calculableMoney.replaceAll(" ", "");
-            var calculableMoney = calculableMoney.replaceAll(".", "");
-            document.getElementById("TransactionForEdit_TransactionForEdit_Amount").value = calculableMoney.replace(/\s/g, '');
-            return true;
-        }
+    function formatMoney(money) {
+        var formattedMoney = money.replaceAll("€", "");
+        var formattedMoney = formattedMoney.replaceAll(" ", "");
+        var formattedMoney = formattedMoney.replaceAll(".", "");
+        var formattedMoney = formattedMoney.replace(/\s/g, '');
+        return formattedMoney;
     }
 
-    function SetupModalForTransactionEdit(id, BudgetId, Amount, Description, CategoryId, Date, Transmitter, Receiver, Message) {
+    function getTransaction(id) {
+        var transaction = {};
+        transactions.forEach(function(t) {
+            // Check if transaction is part of the category
+            if(t.id == id) {
+                transaction = t;
+            }
+        }); 
+        return transaction;
+    }
+
+    function getCategory(id) {
+        var category = {};
+        categories.forEach(function(c) {
+            // Check if transaction is part of the category
+            if(c.id == id) {
+                category = c;
+            }
+        }); 
+        return category;
+    }
+
+    function setupTransactionForEditModal(id) {
+        var transaction = getTransaction(id);
         $('#TransactionForEdit_TransactionForEdit_Id').val(id);
-        $('#TransactionForEdit_TransactionForEdit_BudgetId').val(BudgetId);
-        transactionForEditAmount.set(Amount)
-        $('#TransactionForEdit_TransactionForEdit_Description').val(Description);
-        $('#TransactionForEdit_TransactionForEdit_CategoryId').val(CategoryId);
-        $('#TransactionForEdit_TransactionForEdit_Date').val(Date);
-        $('#TransactionForEdit_TransactionForEdit_Transmitter').val(Transmitter);
-        $('#TransactionForEdit_TransactionForEdit_Receiver').val(Receiver);
-        $('#TransactionForEdit_TransactionForEdit_Message').val(Message);
+        $('#TransactionForEdit_TransactionForEdit_BudgetId').val(transaction.budgetId);
+        transactionAmountForEdit.set(transaction.amount)
+        $('#TransactionForEdit_TransactionForEdit_Description').val(transaction.description);
+        $('#TransactionForEdit_TransactionForEdit_CategoryId').val(transaction.categoryId);
+        $('#TransactionForEdit_TransactionForEdit_Date').val(transaction.date);
+        $('#TransactionForEdit_TransactionForEdit_Transmitter').val(transaction.transmitter);
+        $('#TransactionForEdit_TransactionForEdit_Receiver').val(transaction.receiver);
+        $('#TransactionForEdit_TransactionForEdit_Message').val(transaction.message);
     }
+
+    function setupTransactionForDetailsModal(id) {
+        var transaction = getTransaction(id);
+        var category = getCategory(transaction.categoryId);
+        $('#TransactionIdDetails').text(""); 
+        $('#TransactionDescriptionDetails').text(""); 
+        $('#TransactionCateogryDetails').text(""); 
+        $('#TransactionDateDetails').text(""); 
+        $('#TransactionTransmitterDetails').text(""); 
+        $('#TransactionRecieverDetails').text(""); 
+        $('#TransactionMessageDetails').text(""); 
+
+        $('#TransactionIdDetails').text(transaction.id); 
+        $('#TransactionDescriptionDetails').text(transaction.description);
+        if (category.name == "" || category.name == undefined) {
+            $('#TransactionCateogryDetails').text("none");
+        } else {
+            $('#TransactionCateogryDetails').text(category.name);
+        }
+        $('#TransactionDateDetails').text(transaction.date); 
+        $('#TransactionTransmitterDetails').text(transaction.transmitter); 
+        $('#TransactionRecieverDetails').text(transaction.receiver); 
+        $('#TransactionMessageDetails').text(transaction.message); 
+    }
+    
 </script>
 
 

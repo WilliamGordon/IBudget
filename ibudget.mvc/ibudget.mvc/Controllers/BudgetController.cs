@@ -132,10 +132,10 @@ namespace ibudget.mvc.Controllers
             try
             {
                 ViewBag.ErrorNotification = TempData["ErrorNotification"];
-                ViewBag.ErrorNotificationTransactionModal = TempData["ErrorNotificationTransactionModal"];
+                ViewBag.ErrorNotificationTransactionForCreateModal = TempData["ErrorNotificationTransactionForCreateModal"];
                 ViewBag.ErrorNotificationTransactionForEditModal = TempData["ErrorNotificationTransactionForEditModal"];
-                ViewBag.ErrorNotificationNewCategoryModal = TempData["ErrorNotificationNewCategoryModal"];
-                ViewBag.ErrorNotificationAddCategoryModal = TempData["ErrorNotificationAddCategoryModal"];
+                ViewBag.ErrorNotificationTransactionCategoryForEditModal = TempData["ErrorNotificationTransactionCategoryForEditModal"];
+                ViewBag.ErrorNotificationCategoryForCreateModal = TempData["ErrorNotificationCategoryForCreateModal"];
                 // check if controller parameters are correctly set
                 if (String.IsNullOrEmpty(month) || String.IsNullOrEmpty(year))
                 {
@@ -302,7 +302,7 @@ namespace ibudget.mvc.Controllers
                 }
                 else
                 {
-                    TempData["ErrorNotificationTransactionModal"] = response.Content;
+                    TempData["ErrorNotificationTransactionForCreateModal"] = response.Content;
                     TempData["transaction"] = JsonConvert.SerializeObject(transaction);
                     return RedirectToAction(nameof(DashboardBudget), new
                     {
@@ -359,7 +359,7 @@ namespace ibudget.mvc.Controllers
                 }
                 else
                 {
-                    TempData["ErrorNotificationNewCategoryModal"] = response.Content;
+                    TempData["ErrorNotificationTransactionCategoryForEditModal"] = response.Content;
                     TempData["category"] = JsonConvert.SerializeObject(category);
                     return RedirectToAction(nameof(DashboardBudget), new
                     {
@@ -465,7 +465,7 @@ namespace ibudget.mvc.Controllers
                 }
                 else
                 {
-                    TempData["ErrorNotificationAddCategoryModal"] = response.Content;
+                    TempData["ErrorNotificationCategoryForCreateModal"] = response.Content;
                     TempData["transactionCategoryForEdit"] = JsonConvert.SerializeObject(transactionCategoryForEdit);
                     return RedirectToAction(nameof(DashboardBudget), new
                     {
@@ -485,6 +485,56 @@ namespace ibudget.mvc.Controllers
                     year = transactionCategoryForEdit.Year,
                 });
             }
+        }
+
+        public async Task<IActionResult> DeleteTransaction(int id, int budgetid, string month, string year)
+        {
+            try
+            {
+                // Getting Auth0 parameters
+                var AccessToken = await HttpContext.GetTokenAsync("access_token");
+
+                // Configuration API Call with RestSharp
+                var client = new RestClient($"{Configuration["Auth0:Audience"]}/api/Transaction/DeleteTransaction/{id}");
+                var request = new RestRequest(Method.DELETE);
+                request.RequestFormat = DataFormat.Json;
+                request.AddHeader("Content-Type", "application/json;");
+                request.AddHeader("authorization", $"Bearer {AccessToken}");
+
+                // Executing API Call with RestSharp
+                var response = client.Delete(request);
+
+                if (response.IsSuccessful)
+                {
+                    return RedirectToAction(nameof(DashboardBudget), new
+                    {
+                        Id = budgetid,
+                        month = month,
+                        year = year,
+                    });
+                }
+                else
+                {
+                    TempData["ErrorNotification"] = response.Content;
+                    return RedirectToAction(nameof(DashboardBudget), new
+                    {
+                        Id = budgetid,
+                        month = month,
+                        year = year,
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorNotification"] = ex;
+                return RedirectToAction(nameof(DashboardBudget), new
+                {
+                    Id = budgetid,
+                    month = month,
+                    year = year,
+                });
+            }
+            
         }
     }
 }

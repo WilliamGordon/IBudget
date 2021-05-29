@@ -70,7 +70,7 @@ namespace ibudget.console
                     newTransaction.Transmitter = transaction.account_number;
                     newTransaction.Description = concatenateInformation(transaction.type, transaction.description);
                     newTransaction.Message = transaction.message;
-                    newTransaction.BudgetId = 1;
+                    newTransaction.BudgetId = 2;
 
                     // TODO When using the self-refencing table either assign a each transaction
                     // either to an Expense or an Income depending on the amount

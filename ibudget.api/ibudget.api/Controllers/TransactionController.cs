@@ -60,7 +60,7 @@ namespace ibudget.api.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteTransaction/{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             await Mediator.Send(new DeleteTransactionCommand { Id = id });

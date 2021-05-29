@@ -11,7 +11,7 @@ namespace ibudget.console
             DbContextOptions<ApplicationDbContext> options = new DbContextOptions<ApplicationDbContext>();
             using (var context = new ApplicationDbContext(options))
             {
-                var processor = new TransactionProcessorCSV(context, @"C:\Users\willi\Downloads\transaction_ING.csv");
+                var processor = new TransactionProcessorCSV(context, @"C:\Users\willi\Downloads\transaction_KEY.csv");
                 processor.ProcessTransactions();
             }
         }
